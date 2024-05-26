@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.domain;
+package com.feefo.note_web_app_web_service.domain.note;
 
 import java.util.Collection;
 

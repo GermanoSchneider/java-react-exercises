@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.infrastructure;
+package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

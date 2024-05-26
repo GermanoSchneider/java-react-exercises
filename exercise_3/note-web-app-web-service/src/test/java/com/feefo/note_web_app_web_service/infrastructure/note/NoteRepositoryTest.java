@@ -1,7 +1,8 @@
-package com.feefo.note_web_app_web_service.infrastructure;
+package com.feefo.note_web_app_web_service.infrastructure.note;
 
-import com.feefo.note_web_app_web_service.domain.Note;
-import com.feefo.note_web_app_web_service.domain.NoteRepository;
+import com.feefo.note_web_app_web_service.ModelFixture;
+import com.feefo.note_web_app_web_service.domain.note.Note;
+import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
-import static com.feefo.note_web_app_web_service.infrastructure.EntityFixture.buildFrom;
+import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -43,13 +44,16 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldReadNoteWithSuccess() {
 
-        NoteEntity newedNoteEntity = testEntityManager.persist(buildFrom(buildNote()));
+        Note note = ModelFixture.noteBuilder().id(null).build();
+
+        NoteEntity newedNoteEntity = testEntityManager.persist(buildFrom(note));
 
         Collection<Note> findNewNote = noteRepository.findAll();
 
-        findNewNote.forEach(note ->
+        findNewNote.forEach(persistedNote ->
             assertThat(newedNoteEntity)
                     .usingRecursiveComparison()
+                    .ignoringFields("id")
                     .isEqualTo(note)
         );
     }
@@ -58,7 +62,8 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldUpdateANoteWithSuccess() {
 
-        NoteEntity noteEntity = testEntityManager.persist(buildFrom(buildNote()));
+        Note note = ModelFixture.noteBuilder().id(null).build();
+        NoteEntity noteEntity = testEntityManager.persist(buildFrom(note));
 
         String newText = "updated dummy text";
 
@@ -92,7 +97,9 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldDeleteANoteWithSuccess() {
 
-        NoteEntity noteEntity = testEntityManager.persist(buildFrom(buildNote()));
+        Note note = ModelFixture.noteBuilder().id(null).build();
+
+        NoteEntity noteEntity = testEntityManager.persist(buildFrom(note));
 
         noteRepository.deleteBy(noteEntity.getId());
 

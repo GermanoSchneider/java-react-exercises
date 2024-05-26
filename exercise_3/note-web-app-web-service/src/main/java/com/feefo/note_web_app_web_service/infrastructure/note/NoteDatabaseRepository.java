@@ -1,14 +1,14 @@
-package com.feefo.note_web_app_web_service.infrastructure;
+package com.feefo.note_web_app_web_service.infrastructure.note;
 
-import com.feefo.note_web_app_web_service.domain.Note;
-import com.feefo.note_web_app_web_service.domain.NoteRepository;
+import com.feefo.note_web_app_web_service.domain.note.Note;
+import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
-import static com.feefo.note_web_app_web_service.infrastructure.NoteMapper.from;
+import static com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper.from;
 import static java.util.stream.Collectors.toList;
 
 @Repository
@@ -23,7 +23,7 @@ class NoteDatabaseRepository implements NoteRepository {
     @Override
     public Note save(Note note) {
 
-        NoteEntity noteEntity = from(note);
+        NoteEntity noteEntity = from(note).build();
 
         NoteEntity newedNoteEntity = noteJpaRepository.save(noteEntity);
 
@@ -52,7 +52,7 @@ class NoteDatabaseRepository implements NoteRepository {
                 .lastUpdate(LocalDateTime.now())
                 .build();
 
-        NoteEntity updatedNoteEntity = noteJpaRepository.save(from(updatedNote));
+        NoteEntity updatedNoteEntity = noteJpaRepository.save(from(updatedNote).build());
 
         return from(updatedNoteEntity).build();
     }

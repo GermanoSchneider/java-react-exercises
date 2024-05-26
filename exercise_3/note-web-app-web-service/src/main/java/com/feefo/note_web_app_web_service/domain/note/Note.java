@@ -1,4 +1,6 @@
-package com.feefo.note_web_app_web_service.domain;
+package com.feefo.note_web_app_web_service.domain.note;
+
+import com.feefo.note_web_app_web_service.domain.Model;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +15,7 @@ public class Note extends Model {
     private final LocalDateTime lastUpdate;
 
     private Note(NoteBuilder noteBuilder) {
-        this.id = validate("id", noteBuilder.id);
+        this.id = noteBuilder.id;
         this.text = validate("text", noteBuilder.text);
         this.creation = validate("creation", noteBuilder.creation);
         this.lastUpdate = validate("lastUpdate", noteBuilder.lastUpdate);
@@ -28,8 +30,6 @@ public class Note extends Model {
         private LocalDateTime creation;
 
         private LocalDateTime lastUpdate;
-
-        public NoteBuilder() {}
 
         public NoteBuilder id(Long id) {
             this.id = id;

@@ -3,52 +3,52 @@ package com.feefo.note_web_app_web_service.domain;
 import com.feefo.note_web_app_web_service.ModelFixture;
 import org.junit.jupiter.api.Test;
 
-import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
+import static com.feefo.note_web_app_web_service.ModelFixture.userBuilder;
 import static org.junit.jupiter.api.Assertions.*;
 
-class NoteTest {
+class UserTest {
 
     @Test
-    void shouldCreateNoteModelWithSuccess() {
+    void shouldCreateUserModelWithSuccess() {
 
-        assertDoesNotThrow(ModelFixture::buildNote);
+        assertDoesNotThrow(ModelFixture::buildUser);
     }
 
     @Test
-    void shouldFailWhenTryingToCreateANoteModelWithoutText() {
+    void shouldFailWhenTryingToCreateAUserModelWithoutName() {
 
         ConstraintException exception = assertThrows(
                 ConstraintException.class,
-                () -> noteBuilder().text(null).build()
+                () -> userBuilder().name(null).build()
         );
 
-        String expectedMessage = "text should not be a null value";
+        String expectedMessage = "name should not be a null value";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
-    void shouldFailWhenTryingToCreateANoteModelWithoutCreationDate() {
+    void shouldFailWhenTryingToCreateANoteModelWithoutPassword() {
 
         ConstraintException exception = assertThrows(
                 ConstraintException.class,
-                () -> noteBuilder().creation(null).build()
+                () -> userBuilder().password(null).build()
         );
 
-        String expectedMessage = "creation should not be a null value";
+        String expectedMessage = "password should not be a null value";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
-    void shouldFailWhenTryingToCreateANoteModelWithoutLastUpdateDate() {
+    void shouldFailWhenTryingToCreateANoteModelWithoutNotes() {
 
         ConstraintException exception = assertThrows(
                 ConstraintException.class,
-                () -> noteBuilder().lastUpdate(null).build()
+                () -> userBuilder().notes(null).build()
         );
 
-        String expectedMessage = "lastUpdate should not be a null value";
+        String expectedMessage = "notes should not be a null value";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
