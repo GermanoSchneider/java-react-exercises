@@ -31,12 +31,12 @@ class UserRepositoryTest {
     @DirtiesContext
     void shouldCreateANewUserWithSuccess() {
 
-        User newedUser = userRepository.save(buildUser());
+        User savedUser = userRepository.save(buildUser());
         UserEntity findNewUser = testEntityManager.find(UserEntity.class, 1);
 
         assertThat(findNewUser)
                 .usingRecursiveComparison()
-                .isEqualTo(newedUser);
+                .isEqualTo(savedUser);
     }
 
     @Test
@@ -47,13 +47,13 @@ class UserRepositoryTest {
         User user = userBuilder().id(null).notes(List.of(note)).build();
 
         UserEntity userEntity = buildFrom(user);
-        UserEntity newedUser = testEntityManager.persist(userEntity);
+        UserEntity savedUser = testEntityManager.persist(userEntity);
 
-        User findUser = userRepository.findBy(newedUser.getId());
+        User findUser = userRepository.findBy(savedUser.getId());
 
         assertThat(findUser)
                 .usingRecursiveComparison()
-                .isEqualTo(newedUser);
+                .isEqualTo(savedUser);
     }
 
     @Test

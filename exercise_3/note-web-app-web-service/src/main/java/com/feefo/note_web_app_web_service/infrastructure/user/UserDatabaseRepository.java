@@ -22,9 +22,9 @@ class UserDatabaseRepository implements UserRepository {
 
         UserEntity userEntity = from(user).build();
 
-        UserEntity newedUser = userJpaRepository.save(userEntity);
+        UserEntity savedUser = userJpaRepository.save(userEntity);
 
-        return from(newedUser).build();
+        return from(savedUser).build();
     }
 
     @Override

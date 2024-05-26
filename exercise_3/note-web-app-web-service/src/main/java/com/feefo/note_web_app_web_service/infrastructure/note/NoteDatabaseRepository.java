@@ -25,9 +25,9 @@ class NoteDatabaseRepository implements NoteRepository {
 
         NoteEntity noteEntity = from(note).build();
 
-        NoteEntity newedNoteEntity = noteJpaRepository.save(noteEntity);
+        NoteEntity savedNoteEntity = noteJpaRepository.save(noteEntity);
 
-        return from(newedNoteEntity).build();
+        return from(savedNoteEntity).build();
     }
 
     @Override

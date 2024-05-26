@@ -32,12 +32,12 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldCreateANewNoteWithSuccess() {
 
-        Note newedNote = noteRepository.save(buildNote());
+        Note savedNote = noteRepository.save(buildNote());
         NoteEntity findNewNote = testEntityManager.find(NoteEntity.class, 1);
 
         assertThat(findNewNote)
                 .usingRecursiveComparison()
-                .isEqualTo(newedNote);
+                .isEqualTo(savedNote);
     }
 
     @Test
@@ -46,12 +46,12 @@ class NoteRepositoryTest {
 
         Note note = ModelFixture.noteBuilder().id(null).build();
 
-        NoteEntity newedNoteEntity = testEntityManager.persist(buildFrom(note));
+        NoteEntity savedNoteEntity = testEntityManager.persist(buildFrom(note));
 
         Collection<Note> findNewNote = noteRepository.findAll();
 
         findNewNote.forEach(persistedNote ->
-            assertThat(newedNoteEntity)
+            assertThat(savedNoteEntity)
                     .usingRecursiveComparison()
                     .ignoringFields("id")
                     .isEqualTo(note)
