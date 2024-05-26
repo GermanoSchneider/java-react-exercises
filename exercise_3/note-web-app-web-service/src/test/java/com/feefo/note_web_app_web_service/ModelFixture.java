@@ -20,6 +20,7 @@ public class ModelFixture {
     public static NoteBuilder noteBuilder() {
 
         return builder()
+                .id(1L)
                 .text("dummy text")
                 .creation(LocalDateTime.now())
                 .lastUpdate(LocalDateTime.now());

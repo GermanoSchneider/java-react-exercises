@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 public class Note extends Model {
 
+    private final Long id;
+
     private final String text;
 
     private final LocalDateTime creation;
@@ -11,12 +13,15 @@ public class Note extends Model {
     private final LocalDateTime lastUpdate;
 
     private Note(NoteBuilder noteBuilder) {
+        this.id = validate("id", noteBuilder.id);
         this.text = validate("text", noteBuilder.text);
         this.creation = validate("creation", noteBuilder.creation);
         this.lastUpdate = validate("lastUpdate", noteBuilder.lastUpdate);
     }
 
     public static class NoteBuilder {
+
+        private Long id;
 
         private String text;
 
@@ -25,6 +30,11 @@ public class Note extends Model {
         private LocalDateTime lastUpdate;
 
         public NoteBuilder() {}
+
+        public NoteBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public NoteBuilder text(String text) {
             this.text = text;
@@ -48,5 +58,21 @@ public class Note extends Model {
 
     public static NoteBuilder builder() {
         return new NoteBuilder();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public LocalDateTime getCreation() {
+        return creation;
+    }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
     }
 }

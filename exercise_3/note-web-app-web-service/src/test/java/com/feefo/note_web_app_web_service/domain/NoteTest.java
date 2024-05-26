@@ -15,6 +15,19 @@ class NoteTest {
     }
 
     @Test
+    void shouldFailWhenTryingToCreateANoteModelWithoutId() {
+
+        ConstraintException exception = assertThrows(
+                ConstraintException.class,
+                () -> noteBuilder().id(null).build()
+        );
+
+        String expectedMessage = "id should not be a null value";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
     void shouldFailWhenTryingToCreateANoteModelWithoutText() {
 
         ConstraintException exception = assertThrows(
