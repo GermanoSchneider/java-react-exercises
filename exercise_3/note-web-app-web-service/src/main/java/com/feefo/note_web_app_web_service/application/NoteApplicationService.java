@@ -20,9 +20,9 @@ public class NoteApplicationService {
         return noteRepository.save(note);
     }
 
-    public Collection<Note> findAll() {
+    public Collection<Note> findAllBy(String owner) {
 
-        return noteRepository.findAll();
+        return noteRepository.findAllBy(owner);
     }
 
     public Note update(Long id, String text) {

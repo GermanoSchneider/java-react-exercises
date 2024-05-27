@@ -1,6 +1,5 @@
 package com.feefo.note_web_app_web_service.application;
 
-import com.feefo.note_web_app_web_service.ModelFixture;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Collection;
 import java.util.List;
 
-import static com.feefo.note_web_app_web_service.ModelFixture.*;
+import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
+import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -61,15 +61,17 @@ class NoteApplicationServiceTest {
     void shouldExecuteTheNoteReadingProcessWithSuccess() {
 
         Collection<Note> notes = List.of(buildNote());
+        String username = "john";
+
 
         doReturn(notes)
                 .when(noteRepository)
-                .findAll();
+                .findAllBy(username);
 
-        Collection<Note> notesFound = noteService.findAll();
+        Collection<Note> notesFound = noteService.findAllBy(username);
 
         assertThat(notes).hasSameElementsAs(notesFound);
-        verify(noteRepository).findAll();
+        verify(noteRepository).findAllBy(username);
     }
 
     @Test

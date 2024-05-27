@@ -1,6 +1,6 @@
 package com.feefo.note_web_app_web_service.infrastructure.user;
 
-import com.feefo.note_web_app_web_service.infrastructure.note.NoteEntity;
+import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -10,7 +10,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "users")
-class UserEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE)

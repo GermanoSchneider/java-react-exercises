@@ -1,6 +1,10 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
+import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
+import com.feefo.note_web_app_web_service.infrastructure.user.UserFixture;
+
+import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture.*;
 
 public class NoteFixture {
 
@@ -13,6 +17,7 @@ public class NoteFixture {
                 .text(note.getText())
                 .creation(note.getCreation())
                 .lastUpdate(note.getLastUpdate())
+                .userEntity(UserFixture.buildFrom(note.getUser()))
                 .build();
     }
 
@@ -23,6 +28,7 @@ public class NoteFixture {
                 .text(noteEntity.getText())
                 .creation(noteEntity.getCreation())
                 .lastUpdate(noteEntity.getLastUpdate())
+                .user(UserFixture.buildFrom(noteEntity.getUser()))
                 .build();
     }
 }

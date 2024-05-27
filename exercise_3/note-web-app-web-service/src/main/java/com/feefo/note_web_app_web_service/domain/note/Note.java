@@ -1,6 +1,7 @@
 package com.feefo.note_web_app_web_service.domain.note;
 
 import com.feefo.note_web_app_web_service.domain.Model;
+import com.feefo.note_web_app_web_service.domain.user.User;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +15,14 @@ public class Note extends Model {
 
     private final LocalDateTime lastUpdate;
 
+    private final User user;
+
     private Note(NoteBuilder noteBuilder) {
         this.id = noteBuilder.id;
         this.text = validate("text", noteBuilder.text);
         this.creation = validate("creation", noteBuilder.creation);
         this.lastUpdate = validate("lastUpdate", noteBuilder.lastUpdate);
+        this.user = validate("user", noteBuilder.user);;
     }
 
     public static class NoteBuilder {
@@ -30,6 +34,8 @@ public class Note extends Model {
         private LocalDateTime creation;
 
         private LocalDateTime lastUpdate;
+
+        private User user;
 
         public NoteBuilder id(Long id) {
             this.id = id;
@@ -48,6 +54,11 @@ public class Note extends Model {
 
         public NoteBuilder lastUpdate(LocalDateTime lastUpdate) {
             this.lastUpdate = lastUpdate;
+            return this;
+        }
+
+        public NoteBuilder user(User user) {
+            this.user = user;
             return this;
         }
 
@@ -74,5 +85,9 @@ public class Note extends Model {
 
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

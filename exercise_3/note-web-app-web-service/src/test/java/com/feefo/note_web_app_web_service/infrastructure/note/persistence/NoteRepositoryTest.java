@@ -1,8 +1,9 @@
-package com.feefo.note_web_app_web_service.infrastructure.note;
+package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
 import com.feefo.note_web_app_web_service.ModelFixture;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
+import com.feefo.note_web_app_web_service.domain.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,8 +13,9 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
-import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
+import static com.feefo.note_web_app_web_service.ModelFixture.*;
 import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,13 +44,16 @@ class NoteRepositoryTest {
 
     @Test
     @DirtiesContext
-    void shouldReadNoteWithSuccess() {
+    void shouldFindAllNotesByUserNameWithSuccess() {
 
-        Note note = ModelFixture.noteBuilder().id(null).build();
+        Note note = ModelFixture.noteBuilder().id(1L).user(null).build();
+
+        User user = userBuilder().id(null).notes(List.of()).build();
+
 
         NoteEntity savedNoteEntity = testEntityManager.persist(buildFrom(note));
 
-        Collection<Note> findNewNote = noteRepository.findAll();
+        Collection<Note> findNewNote = noteRepository.findAllBy(note.getUser().getName());
 
         findNewNote.forEach(persistedNote ->
             assertThat(savedNoteEntity)
@@ -62,7 +67,9 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldUpdateANoteWithSuccess() {
 
-        Note note = ModelFixture.noteBuilder().id(null).build();
+        User user = userBuilder().id(null).build();
+        Note note = ModelFixture.noteBuilder().id(null).user(user).build();
+
         NoteEntity noteEntity = testEntityManager.persist(buildFrom(note));
 
         String newText = "updated dummy text";
@@ -97,7 +104,8 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldDeleteANoteWithSuccess() {
 
-        Note note = ModelFixture.noteBuilder().id(null).build();
+        User user = userBuilder().id(null).build();
+        Note note = ModelFixture.noteBuilder().id(null).user(user).build();
 
         NoteEntity noteEntity = testEntityManager.persist(buildFrom(note));
 

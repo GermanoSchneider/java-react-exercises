@@ -2,7 +2,7 @@ package com.feefo.note_web_app_web_service.infrastructure.user;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.user.User;
-import com.feefo.note_web_app_web_service.infrastructure.note.NoteEntity;
+import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,13 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-class UserMapper {
+public class UserMapper {
 
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     private UserMapper() {}
 
-    static UserEntity.UserEntityBuilder from(User user) {
+    public static UserEntity.UserEntityBuilder from(User user) {
 
         return UserEntity
                 .builder()
@@ -26,7 +26,7 @@ class UserMapper {
                 .notes(getNoteEntitiesFrom(user.getNotes()));
     }
 
-    static User.UserBuilder from(UserEntity userEntity) {
+    public static User.UserBuilder from(UserEntity userEntity) {
 
         return User.builder()
                 .id(userEntity.getId())

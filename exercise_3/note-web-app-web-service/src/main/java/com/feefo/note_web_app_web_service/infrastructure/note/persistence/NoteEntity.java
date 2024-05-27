@@ -1,9 +1,7 @@
-package com.feefo.note_web_app_web_service.infrastructure.note;
+package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.feefo.note_web_app_web_service.infrastructure.user.UserEntity;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +21,9 @@ public class NoteEntity {
 
     private LocalDateTime lastUpdate;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private UserEntity user;
+
     NoteEntity() {}
 
     NoteEntity(NoteEntityBuilder noteEntityBuilder) {
@@ -30,6 +31,7 @@ public class NoteEntity {
         this.text = noteEntityBuilder.text;
         this.creation = noteEntityBuilder.creation;
         this.lastUpdate = noteEntityBuilder.lastUpdate;
+        this.user = noteEntityBuilder.user;
     }
 
     public static class NoteEntityBuilder {
@@ -41,6 +43,8 @@ public class NoteEntity {
         private LocalDateTime creation;
 
         private LocalDateTime lastUpdate;
+
+        private UserEntity user;
 
         public NoteEntityBuilder id(Long id) {
             this.id = id;
@@ -59,6 +63,11 @@ public class NoteEntity {
 
         public NoteEntityBuilder lastUpdate(LocalDateTime lastUpdate) {
             this.lastUpdate = lastUpdate;
+            return this;
+        }
+
+        public NoteEntityBuilder userEntity(UserEntity userEntity) {
+            this.user = userEntity;
             return this;
         }
 
@@ -85,5 +94,9 @@ public class NoteEntity {
 
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
+    }
+
+    public UserEntity getUser() {
+        return user;
     }
 }

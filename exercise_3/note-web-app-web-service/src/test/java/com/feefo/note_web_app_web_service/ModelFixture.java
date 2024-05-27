@@ -31,7 +31,8 @@ public class ModelFixture {
                 .id(1L)
                 .text("dummy text")
                 .creation(LocalDateTime.now())
-                .lastUpdate(LocalDateTime.now());
+                .lastUpdate(LocalDateTime.now())
+                .user(userBuilder().build());
     }
 
     public static UserBuilder userBuilder() {
@@ -40,6 +41,6 @@ public class ModelFixture {
                 .id(1L)
                 .name("john")
                 .password("123")
-                .notes(List.of(buildNote()));
+                .notes(List.of());
     }
 }

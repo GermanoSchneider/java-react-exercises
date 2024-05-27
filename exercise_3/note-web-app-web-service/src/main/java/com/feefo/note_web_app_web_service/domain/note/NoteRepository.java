@@ -7,7 +7,7 @@ public interface NoteRepository {
 
     Note save(Note note);
 
-    Collection<Note> findAll();
+    Collection<Note> findAllBy(String owner);
 
     Note update(Long id, String text);
 

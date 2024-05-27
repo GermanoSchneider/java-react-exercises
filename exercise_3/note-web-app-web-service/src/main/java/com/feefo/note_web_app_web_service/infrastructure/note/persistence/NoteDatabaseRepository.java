@@ -1,7 +1,8 @@
-package com.feefo.note_web_app_web_service.infrastructure.note;
+package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
+import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -31,10 +32,10 @@ class NoteDatabaseRepository implements NoteRepository {
     }
 
     @Override
-    public Collection<Note> findAll() {
+    public Collection<Note> findAllBy(String owner) {
 
         return noteJpaRepository
-                .findAll()
+                .findByUserName(owner)
                 .stream()
                 .map(noteEntity -> from(noteEntity).build())
                 .collect(toList());
