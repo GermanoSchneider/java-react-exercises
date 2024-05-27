@@ -38,6 +38,7 @@ class NoteApplicationServiceTest {
         Note savedNote = noteService.create(note);
 
         assertThat(note).isEqualTo(savedNote);
+
         verify(noteRepository).save(note);
     }
 
@@ -46,47 +47,49 @@ class NoteApplicationServiceTest {
 
         String newText = "updated dummy text";
         Note note = noteBuilder().text(newText).build();
+        String owner = note.getOwner();
         Long id = note.getId();
 
-        doReturn(Optional.of(note))
+        doReturn(note)
                 .when(noteRepository)
-                .update(1L, newText, note.getUser().getName());
+                .update(id, newText, owner);
 
-        Note updatedNote = noteService.update(id, newText, note.getUser().getName()).get();
+        Note updatedNote = noteService.update(id, newText, owner);
 
-        assertThat(updatedNote.getText()).isEqualTo(newText);
-        verify(noteRepository).update(id, newText, note.getUser().getName());
+        assertThat(note).isEqualTo(updatedNote);
+        verify(noteRepository).update(id, newText, owner);
     }
 
     @Test
     void shouldExecuteTheNoteReadingProcessWithSuccess() {
 
-        Collection<Note> notes = List.of(buildNote());
-        String username = "john";
-
+        Note note = buildNote();
+        String owner = note.getOwner();
+        Collection<Note> notes = List.of(note);
 
         doReturn(notes)
                 .when(noteRepository)
-                .findAllBy(username);
+                .findAllBy(owner);
 
-        Collection<Note> notesFound = noteService.findAllBy(username);
+        Collection<Note> notesFound = noteService.findAllBy(owner);
 
         assertThat(notes).hasSameElementsAs(notesFound);
-        verify(noteRepository).findAllBy(username);
+        verify(noteRepository).findAllBy(owner);
     }
 
     @Test
     void shouldExecuteTheNoteDeletionProcessWithSuccess() {
 
         Note note = buildNote();
+        String owner = note.getOwner();
         Long id = note.getId();
 
         doNothing()
                 .when(noteRepository)
-                .deleteBy(id, note.getUser().getName());
+                .deleteBy(id, owner);
 
-        noteService.deleteBy(id, note.getUser().getName());
+        noteService.deleteBy(id, owner);
 
-        verify(noteRepository).deleteBy(id, note.getUser().getName());
+        verify(noteRepository).deleteBy(id, owner);
     }
 }

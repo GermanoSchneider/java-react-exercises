@@ -3,12 +3,11 @@ package com.feefo.note_web_app_web_service.infrastructure.user;
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
+import java.util.ArrayList;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 
 @Component
 class UserAuthDetailsAdapter implements UserDetailsService {
@@ -25,9 +24,9 @@ class UserAuthDetailsAdapter implements UserDetailsService {
         User user = applicationService.findBy(username);
 
         return new org.springframework.security.core.userdetails.User(
-                user.getName(),
-                user.getPassword(),
-                new ArrayList<>()
+            user.getName(),
+            user.getPassword(),
+            new ArrayList<>()
         );
     }
 }

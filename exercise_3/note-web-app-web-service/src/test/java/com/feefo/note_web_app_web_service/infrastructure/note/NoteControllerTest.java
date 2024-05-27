@@ -1,7 +1,6 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
-import static com.feefo.note_web_app_web_service.ModelFixture.buildUser;
-import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
+import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -20,11 +19,9 @@ import com.feefo.note_web_app_web_service.SpringAuthConfig;
 import com.feefo.note_web_app_web_service.application.NoteApplicationService;
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.note.Note;
-import com.feefo.note_web_app_web_service.domain.user.User;
 import java.text.DateFormat;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -59,12 +56,7 @@ class NoteControllerTest {
 
       String json = mapper.writeValueAsString(request);
 
-      User user = buildUser();
-      Note note = noteBuilder().user(user).build();
-
-      doReturn(user)
-          .when(userApplicationService)
-          .findBy(user.getName());
+      Note note = buildNote();
 
       doReturn(note)
           .when(noteApplicationService)
@@ -88,15 +80,16 @@ class NoteControllerTest {
 
     String json = mapper.writeValueAsString(request);
 
-    User user = buildUser();
-    Note note = noteBuilder().user(user).build();
+    Note note = buildNote();
 
-    doReturn(Optional.of(note))
+    Long id = note.getId();
+
+    doReturn(note)
         .when(noteApplicationService)
-        .update(note.getId(), request.getText(), user.getName());
+        .update(id, request.getText(), note.getOwner());
 
     mockMvc.perform(
-            post("/notes/" + note.getId())
+            post("/notes/" + id)
                 .contentType(APPLICATION_JSON)
                 .content(json)
                 .with(user("john").password("1234"))
@@ -106,36 +99,9 @@ class NoteControllerTest {
 
   @Test
   @DirtiesContext
-  void shouldNotUpdateANoteWhenItDoesNotExist() throws Exception {
-
-    NoteRequestDto request = new NoteRequestDto("hello world 123!");
-
-    String json = mapper.writeValueAsString(request);
-
-    User user = buildUser();
-    Note note = noteBuilder().user(user).build();
-
-    Long invalidId = 2L;
-
-    doReturn(Optional.empty())
-        .when(noteApplicationService)
-        .update(invalidId, request.getText(), user.getName());
-
-    mockMvc.perform(
-            post("/notes/" + invalidId)
-                .contentType(APPLICATION_JSON)
-                .content(json)
-                .with(user("john").password("1234"))
-        ).andExpect(status().isNotFound())
-        .andExpect(content().string(""));
-  }
-
-  @Test
-  @DirtiesContext
   void shouldFindAllNotes() throws Exception {
 
-    User user = buildUser();
-    Note note = noteBuilder().user(user).build();
+    Note note = buildNote();
 
     Collection<Note> notes = List.of(note);
 
@@ -146,7 +112,7 @@ class NoteControllerTest {
 
     doReturn(notes)
         .when(noteApplicationService)
-        .findAllBy(user.getName());
+        .findAllBy(note.getOwner());
 
     mockMvc.perform(
             get("/notes")
@@ -161,15 +127,16 @@ class NoteControllerTest {
   @DirtiesContext
   void shouldDeleteANote() throws Exception {
 
-    User user = buildUser();
-    Note note = noteBuilder().user(user).build();
+    Note note = buildNote();
+
+    Long id = note.getId();
 
     doNothing()
         .when(noteApplicationService)
-        .deleteBy(note.getId(), user.getName());
+        .deleteBy(id, note.getOwner());
 
     mockMvc.perform(
-            delete("/notes/" + note.getId())
+            delete("/notes/" + id)
                 .contentType(APPLICATION_JSON)
                 .with(user("john").password("1234"))
         ).andExpect(status().isNoContent())

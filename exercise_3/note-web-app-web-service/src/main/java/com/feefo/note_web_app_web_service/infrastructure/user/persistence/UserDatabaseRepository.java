@@ -36,10 +36,8 @@ class UserDatabaseRepository implements UserRepository {
     @Override
     public User findByName(String name) {
 
-        Optional<UserEntity> user = userJpaRepository.findByName(name);
+        UserEntity user = userJpaRepository.findByName(name);
 
-        if (user.isEmpty()) throw new RuntimeException("The user with name " + name + " was not found");
-
-        return from(user.get()).build();
+        return from(user).build();
     }
 }

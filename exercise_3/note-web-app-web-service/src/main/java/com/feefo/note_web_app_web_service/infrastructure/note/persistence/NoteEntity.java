@@ -1,11 +1,12 @@
 package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
-import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 import static jakarta.persistence.GenerationType.SEQUENCE;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "note")
@@ -21,8 +22,7 @@ public class NoteEntity {
 
     private LocalDateTime lastUpdate;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private UserEntity user;
+    private String owner;
 
     NoteEntity() {}
 
@@ -31,7 +31,7 @@ public class NoteEntity {
         this.text = noteEntityBuilder.text;
         this.creation = noteEntityBuilder.creation;
         this.lastUpdate = noteEntityBuilder.lastUpdate;
-        this.user = noteEntityBuilder.user;
+        this.owner = noteEntityBuilder.owner;
     }
 
     public static class NoteEntityBuilder {
@@ -44,7 +44,7 @@ public class NoteEntity {
 
         private LocalDateTime lastUpdate;
 
-        private UserEntity user;
+        private String owner;
 
         public NoteEntityBuilder id(Long id) {
             this.id = id;
@@ -66,8 +66,8 @@ public class NoteEntity {
             return this;
         }
 
-        public NoteEntityBuilder userEntity(UserEntity userEntity) {
-            this.user = userEntity;
+        public NoteEntityBuilder owner(String owner) {
+            this.owner = owner;
             return this;
         }
 
@@ -96,7 +96,7 @@ public class NoteEntity {
         return lastUpdate;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public String getOwner() {
+        return owner;
     }
 }

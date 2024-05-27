@@ -2,6 +2,8 @@ package com.feefo.note_web_app_web_service.application;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
+import com.feefo.note_web_app_web_service.domain.user.User;
+import com.feefo.note_web_app_web_service.domain.user.UserRepository;
 import java.util.Collection;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class NoteApplicationService {
         return noteRepository.findAllBy(owner);
     }
 
-    public Optional<Note> update(Long id, String text, String owner) {
+    public Note update(Long id, String text, String owner) {
 
         return noteRepository.update(id, text, owner);
     }

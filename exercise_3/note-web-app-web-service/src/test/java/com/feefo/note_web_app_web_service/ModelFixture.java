@@ -32,7 +32,7 @@ public class ModelFixture {
                 .text("dummy text")
                 .creation(LocalDateTime.now())
                 .lastUpdate(LocalDateTime.now())
-                .user(userBuilder().build());
+                .owner("john");
     }
 
     public static UserBuilder userBuilder() {

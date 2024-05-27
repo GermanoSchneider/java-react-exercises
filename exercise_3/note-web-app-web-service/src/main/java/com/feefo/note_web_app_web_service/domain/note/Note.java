@@ -15,14 +15,14 @@ public class Note extends Model {
 
     private final LocalDateTime lastUpdate;
 
-    private final User user;
+    private final String owner;
 
     private Note(NoteBuilder noteBuilder) {
         this.id = noteBuilder.id;
         this.text = validate("text", noteBuilder.text);
         this.creation = validate("creation", noteBuilder.creation);
         this.lastUpdate = validate("lastUpdate", noteBuilder.lastUpdate);
-        this.user = validate("user", noteBuilder.user);
+        this.owner = validate("owner", noteBuilder.owner);
     }
 
     public static class NoteBuilder {
@@ -35,7 +35,7 @@ public class Note extends Model {
 
         private LocalDateTime lastUpdate;
 
-        private User user;
+        private String owner;
 
         public NoteBuilder id(Long id) {
             this.id = id;
@@ -57,14 +57,18 @@ public class Note extends Model {
             return this;
         }
 
-        public NoteBuilder user(User user) {
-            this.user = user;
+        public NoteBuilder owner(String owner) {
+            this.owner = owner;
             return this;
         }
 
         public Note build() {
             return new Note(this);
         }
+    }
+
+    public NoteBuilder toBuilder() {
+        return builder();
     }
 
     public static NoteBuilder builder() {
@@ -87,7 +91,7 @@ public class Note extends Model {
         return lastUpdate;
     }
 
-    public User getUser() {
-        return user;
+    public String getOwner() {
+        return owner;
     }
 }

@@ -1,10 +1,16 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
+import static com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper.from;
+import static java.util.Objects.*;
+import static org.springframework.http.ResponseEntity.status;
+
 import com.feefo.note_web_app_web_service.application.NoteApplicationService;
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.user.User;
+import java.util.Objects;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,12 +24,9 @@ import java.util.Collection;
 class NoteController {
 
     private final NoteApplicationService noteApplicationService;
-    private final UserApplicationService userApplicationService;
 
-    NoteController(NoteApplicationService noteApplicationService,
-        UserApplicationService userApplicationService) {
+    NoteController(NoteApplicationService noteApplicationService) {
         this.noteApplicationService = noteApplicationService;
-        this.userApplicationService = userApplicationService;
     }
 
     @PostMapping
@@ -33,10 +36,7 @@ class NoteController {
             Principal principal
     ) {
 
-        User user = userApplicationService.findBy(principal.getName());
-        Note note = NoteMapper.from(dto, user);
-
-        noteApplicationService.create(note);
+        noteApplicationService.create(from(dto, principal.getName()));
 
         URI locationOfNote = uriComponentsBuilder
                 .path("/notes")
@@ -66,13 +66,7 @@ class NoteController {
             Principal principal
     ) {
 
-        Optional<Note> note = noteApplicationService.update(
-                id,
-                request.getText(),
-                principal.getName()
-            );
-
-        if (note.isEmpty()) return ResponseEntity.notFound().build();
+        noteApplicationService.update(id, request.getText(), principal.getName());
 
         return ResponseEntity.noContent().build();
     }

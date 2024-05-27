@@ -1,7 +1,6 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
-import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity.NoteEntityBuilder;
 import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
@@ -22,7 +21,7 @@ public class NoteMapper {
                 .text(note.getText())
                 .creation(note.getCreation())
                 .lastUpdate(note.getLastUpdate())
-                .userEntity(UserMapper.from(note.getUser()).build());
+                .owner(note.getOwner());
     }
 
     public static NoteBuilder from(NoteEntity noteEntity) {
@@ -32,7 +31,7 @@ public class NoteMapper {
                 .text(noteEntity.getText())
                 .creation(noteEntity.getCreation())
                 .lastUpdate(noteEntity.getLastUpdate())
-                .user(UserMapper.from(noteEntity.getUser()).build());
+                .owner(noteEntity.getOwner());
     }
 
     public static NoteResponseDto toNoteResponseDto(Note note) {
@@ -45,13 +44,13 @@ public class NoteMapper {
         );
     }
 
-    public static Note from(NoteRequestDto dto, User user) {
+    public static Note from(NoteRequestDto dto, String owner) {
 
         return builder()
                 .text(dto.getText())
                 .creation(LocalDateTime.now())
                 .lastUpdate(LocalDateTime.now())
-                .user(user)
+                .owner(owner)
                 .build();
     }
 }

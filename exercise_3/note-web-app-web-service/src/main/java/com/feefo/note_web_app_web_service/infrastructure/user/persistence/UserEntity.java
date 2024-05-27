@@ -21,7 +21,7 @@ public class UserEntity {
 
     private String password;
 
-    @OneToMany(cascade = ALL)
+    @OneToMany(cascade = ALL, fetch = FetchType.EAGER)
     private Collection<NoteEntity> notes;
 
     UserEntity() {}

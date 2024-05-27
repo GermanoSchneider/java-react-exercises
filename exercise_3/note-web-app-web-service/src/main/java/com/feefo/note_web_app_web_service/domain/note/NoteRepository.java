@@ -9,7 +9,7 @@ public interface NoteRepository {
 
     Collection<Note> findAllBy(String owner);
 
-    Optional<Note> update(Long id, String text, String owner);
+    Note update(Long id, String text, String owner);
 
     void deleteBy(Long id, String owner);
 }

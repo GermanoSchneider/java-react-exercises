@@ -35,32 +35,32 @@ class NoteDatabaseRepository implements NoteRepository {
     public Collection<Note> findAllBy(String owner) {
 
         return noteJpaRepository
-                .findByUserName(owner)
+                .findByOwner(owner)
                 .stream()
                 .map(noteEntity -> from(noteEntity).build())
                 .collect(toList());
     }
 
     @Override
-    public Optional<Note> update(Long id, String text, String owner) {
+    public Note update(Long id, String text, String owner) {
 
-        Optional<NoteEntity> noteEntity = noteJpaRepository.findByIdAndUserName(id, owner);
+        NoteEntity noteEntity = noteJpaRepository.findByIdAndOwner(id, owner);
 
-        if (noteEntity.isEmpty()) return Optional.empty();
-
-        Note updatedNote = NoteMapper.from(noteEntity.get())
+        Note updatedNote = NoteMapper.from(noteEntity)
                 .text(text)
                 .lastUpdate(LocalDateTime.now())
                 .build();
 
         NoteEntity updatedNoteEntity = noteJpaRepository.save(from(updatedNote).build());
 
-        return Optional.of(from(updatedNoteEntity).build());
+        return from(updatedNoteEntity).build();
     }
 
     @Override
     public void deleteBy(Long id, String owner) {
 
-        noteJpaRepository.deleteById(id);
+        NoteEntity noteEntity = noteJpaRepository.findByIdAndOwner(id, owner);
+
+        noteJpaRepository.deleteById(noteEntity.getId());
     }
 }

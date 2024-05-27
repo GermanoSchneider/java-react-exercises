@@ -4,12 +4,9 @@ import static com.feefo.note_web_app_web_service.ModelFixture.buildUser;
 import static com.feefo.note_web_app_web_service.ModelFixture.userBuilder;
 import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture.buildFrom;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
-import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserDatabaseRepository;
-import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -47,24 +44,10 @@ class UserRepositoryTest {
 
         UserEntity savedUser = testEntityManager.persist(buildFrom(user));
 
-        User findUser = userRepository.findByName(savedUser.getName());
+        User userFound = userRepository.findByName(savedUser.getName());
 
         assertThat(savedUser)
-                .usingRecursiveComparison()
-                .isEqualTo(findUser);
-    }
-
-    @Test
-    @DirtiesContext
-    void shouldFailWhenTryingToFindANonExistingUser() {
-
-        String expectedErrorMessage = "The user with name dummy was not found";
-
-        Exception exception = assertThrows(
-                Exception.class,
-                () -> userRepository.findByName("dummy")
-        );
-
-        assertThat(exception.getMessage()).isEqualTo(expectedErrorMessage);
+            .usingRecursiveComparison()
+            .isEqualTo(userFound);
     }
 }
