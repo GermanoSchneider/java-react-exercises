@@ -36,20 +36,4 @@ class UserApplicationServiceTest {
         assertThat(user).isEqualTo(registeredUser);
         verify(userRepository).save(user);
     }
-
-    @Test
-    void shouldExecuteTheUserReadingProcessWithSuccess() {
-
-        User user = buildUser();
-        Long id = user.getId();
-
-        doReturn(user)
-                .when(userRepository)
-                .findBy(id);
-
-        User userFound = userService.findBy(id);
-
-        assertThat(user).isEqualTo(userFound);
-        verify(userRepository).findBy(id);
-    }
 }

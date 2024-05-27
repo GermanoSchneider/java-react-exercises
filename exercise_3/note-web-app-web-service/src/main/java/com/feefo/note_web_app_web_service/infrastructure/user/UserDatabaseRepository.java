@@ -2,6 +2,7 @@ package com.feefo.note_web_app_web_service.infrastructure.user;
 
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -28,11 +29,11 @@ class UserDatabaseRepository implements UserRepository {
     }
 
     @Override
-    public User findBy(Long id) {
+    public User findByName(String name) {
 
-        Optional<UserEntity> user = userJpaRepository.findById(id);
+        Optional<UserEntity> user = userJpaRepository.findByName(name);
 
-        if (user.isEmpty()) throw new RuntimeException("The user with id " + id + " was not found");
+        if (user.isEmpty()) throw new RuntimeException("The user with name " + name + " was not found");
 
         return from(user.get()).build();
     }

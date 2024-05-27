@@ -2,7 +2,9 @@ package com.feefo.note_web_app_web_service.application;
 
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserApplicationService {
 
     private final UserRepository userRepository;
@@ -16,8 +18,8 @@ public class UserApplicationService {
         return userRepository.save(user);
     }
 
-    public User findBy(Long id) {
+    public User findBy(String name) {
 
-        return userRepository.findBy(id);
+        return userRepository.findByName(name);
     }
 }

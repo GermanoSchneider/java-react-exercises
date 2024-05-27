@@ -16,11 +16,12 @@ class UserEntity {
     @GeneratedValue(strategy = SEQUENCE)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String password;
 
-    @OneToMany(cascade = ALL)
+    @OneToMany(cascade = ALL, fetch = FetchType.EAGER)
     private Collection<NoteEntity> notes;
 
     UserEntity() {}

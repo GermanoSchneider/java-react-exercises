@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -41,7 +42,7 @@ class UserRepositoryTest {
 
     @Test
     @DirtiesContext
-    void shouldFindUserByIdWithSuccess() {
+    void shouldFindUserByNameWithSuccess() {
 
         Note note = noteBuilder().id(null).build();
         User user = userBuilder().id(null).notes(List.of(note)).build();
@@ -49,7 +50,7 @@ class UserRepositoryTest {
         UserEntity userEntity = buildFrom(user);
         UserEntity savedUser = testEntityManager.persist(userEntity);
 
-        User findUser = userRepository.findBy(savedUser.getId());
+        User findUser = userRepository.findByName(savedUser.getName());
 
         assertThat(findUser)
                 .usingRecursiveComparison()
@@ -60,11 +61,11 @@ class UserRepositoryTest {
     @DirtiesContext
     void shouldFailWhenTryingToFindANonExistingUser() {
 
-        String expectedErrorMessage = "The user with id 1 was not found";
+        String expectedErrorMessage = "The user with name dummy was not found";
 
         Exception exception = assertThrows(
                 Exception.class,
-                () -> userRepository.findBy(1L)
+                () -> userRepository.findByName("dummy")
         );
 
         assertThat(exception.getMessage()).isEqualTo(expectedErrorMessage);

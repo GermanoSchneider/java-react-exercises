@@ -4,11 +4,15 @@ import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteEntity;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 class UserMapper {
+
+    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     private UserMapper() {}
 
@@ -18,7 +22,7 @@ class UserMapper {
                 .builder()
                 .id(user.getId())
                 .name(user.getName())
-                .password(user.getPassword())
+                .password(PASSWORD_ENCODER.encode(user.getPassword()))
                 .notes(getNoteEntitiesFrom(user.getNotes()));
     }
 
