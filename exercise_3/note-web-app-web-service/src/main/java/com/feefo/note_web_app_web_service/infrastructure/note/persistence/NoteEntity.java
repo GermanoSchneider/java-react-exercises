@@ -1,6 +1,6 @@
 package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
-import com.feefo.note_web_app_web_service.infrastructure.user.UserEntity;
+import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class NoteEntity {
 
     private LocalDateTime lastUpdate;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private UserEntity user;
 
     NoteEntity() {}

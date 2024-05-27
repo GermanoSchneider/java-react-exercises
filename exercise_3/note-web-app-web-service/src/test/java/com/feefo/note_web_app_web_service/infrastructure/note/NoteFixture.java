@@ -31,4 +31,14 @@ public class NoteFixture {
                 .user(UserFixture.buildFrom(noteEntity.getUser()))
                 .build();
     }
+
+    public static NoteResponseDto toNoteResponseDto(Note note) {
+
+        return new NoteResponseDto(
+            note.getId(),
+            note.getText(),
+            note.getCreation(),
+            note.getLastUpdate()
+        );
+    }
 }

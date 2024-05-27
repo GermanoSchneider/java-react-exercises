@@ -2,9 +2,9 @@ package com.feefo.note_web_app_web_service.application;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class NoteApplicationService {
@@ -25,13 +25,13 @@ public class NoteApplicationService {
         return noteRepository.findAllBy(owner);
     }
 
-    public Note update(Long id, String text) {
+    public Optional<Note> update(Long id, String text, String owner) {
 
-        return noteRepository.update(id, text);
+        return noteRepository.update(id, text, owner);
     }
 
-    public void deleteBy(Long id) {
+    public void deleteBy(Long id, String owner) {
 
-        noteRepository.deleteBy(id);
+        noteRepository.deleteBy(id, owner);
     }
 }

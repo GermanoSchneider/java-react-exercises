@@ -28,7 +28,7 @@ public class SecurityConfig  {
                         .requestMatchers("/notes/**")
                 .authenticated())
                 .httpBasic(Customizer.withDefaults())
-                .cors(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .userDetailsService(userDetailsService);
 
         return http.build();

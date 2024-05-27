@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.infrastructure.user;
+package com.feefo.note_web_app_web_service.infrastructure.user.persistence;
 
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ public class UserEntity {
 
     private String password;
 
-    @OneToMany(cascade = ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = ALL)
     private Collection<NoteEntity> notes;
 
     UserEntity() {}

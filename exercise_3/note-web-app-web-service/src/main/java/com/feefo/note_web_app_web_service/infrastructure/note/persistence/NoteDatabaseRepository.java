@@ -42,11 +42,11 @@ class NoteDatabaseRepository implements NoteRepository {
     }
 
     @Override
-    public Note update(Long id, String text) {
+    public Optional<Note> update(Long id, String text, String owner) {
 
-        Optional<NoteEntity> noteEntity = noteJpaRepository.findById(id);
+        Optional<NoteEntity> noteEntity = noteJpaRepository.findByIdAndUserName(id, owner);
 
-        if (noteEntity.isEmpty()) throw new RuntimeException("The note with id " + id + " was not found");
+        if (noteEntity.isEmpty()) return Optional.empty();
 
         Note updatedNote = NoteMapper.from(noteEntity.get())
                 .text(text)
@@ -55,11 +55,11 @@ class NoteDatabaseRepository implements NoteRepository {
 
         NoteEntity updatedNoteEntity = noteJpaRepository.save(from(updatedNote).build());
 
-        return from(updatedNoteEntity).build();
+        return Optional.of(from(updatedNoteEntity).build());
     }
 
     @Override
-    public void deleteBy(Long id) {
+    public void deleteBy(Long id, String owner) {
 
         noteJpaRepository.deleteById(id);
     }

@@ -2,6 +2,7 @@ package com.feefo.note_web_app_web_service.application;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,14 +48,14 @@ class NoteApplicationServiceTest {
         Note note = noteBuilder().text(newText).build();
         Long id = note.getId();
 
-        doReturn(note)
+        doReturn(Optional.of(note))
                 .when(noteRepository)
-                .update(1L, newText);
+                .update(1L, newText, note.getUser().getName());
 
-        Note updatedNote = noteService.update(id, newText);
+        Note updatedNote = noteService.update(id, newText, note.getUser().getName()).get();
 
         assertThat(updatedNote.getText()).isEqualTo(newText);
-        verify(noteRepository).update(id, newText);
+        verify(noteRepository).update(id, newText, note.getUser().getName());
     }
 
     @Test
@@ -82,10 +83,10 @@ class NoteApplicationServiceTest {
 
         doNothing()
                 .when(noteRepository)
-                .deleteBy(id);
+                .deleteBy(id, note.getUser().getName());
 
-        noteService.deleteBy(id);
+        noteService.deleteBy(id, note.getUser().getName());
 
-        verify(noteRepository).deleteBy(id);
+        verify(noteRepository).deleteBy(id, note.getUser().getName());
     }
 }

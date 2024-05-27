@@ -57,8 +57,8 @@ class NoteTest {
     void shouldFailWhenTryingToCreateANoteModelWithoutUser() {
 
         ConstraintException exception = assertThrows(
-                ConstraintException.class,
-                () -> noteBuilder().user(null).build()
+            ConstraintException.class,
+            () -> noteBuilder().user(null).build()
         );
 
         String expectedMessage = "user should not be a null value";

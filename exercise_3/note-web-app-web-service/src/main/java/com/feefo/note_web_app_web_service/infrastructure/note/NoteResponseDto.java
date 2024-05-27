@@ -2,29 +2,59 @@ package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import java.time.LocalDateTime;
 
-class NoteResponseDto {
+public class NoteResponseDto {
 
-    private final String text;
+    private Long id;
 
-    private final LocalDateTime creation;
+    private String text;
 
-    private final LocalDateTime lastUpdate;
+    private LocalDateTime creation;
 
-    NoteResponseDto(String text, LocalDateTime creation, LocalDateTime lastUpdate) {
+    private LocalDateTime lastUpdate;
+
+    public NoteResponseDto() {}
+
+    public NoteResponseDto(
+        Long id,
+        String text,
+        LocalDateTime creation,
+        LocalDateTime lastUpdate
+    ) {
+        this.id = id;
         this.text = text;
         this.creation = creation;
         this.lastUpdate = lastUpdate;
     }
 
-    String getText() {
+    public Long getId() {
+        return id;
+    }
+
+    public String getText() {
         return text;
     }
 
-    LocalDateTime getCreation() {
+    public LocalDateTime getCreation() {
         return creation;
     }
 
-    LocalDateTime getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setCreation(LocalDateTime creation) {
+        this.creation = creation;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

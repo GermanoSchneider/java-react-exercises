@@ -1,7 +1,10 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import com.feefo.note_web_app_web_service.application.NoteApplicationService;
+import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.note.Note;
+import com.feefo.note_web_app_web_service.domain.user.User;
+import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,18 +18,23 @@ import java.util.Collection;
 class NoteController {
 
     private final NoteApplicationService noteApplicationService;
+    private final UserApplicationService userApplicationService;
 
-    NoteController(NoteApplicationService noteApplicationService) {
+    NoteController(NoteApplicationService noteApplicationService,
+        UserApplicationService userApplicationService) {
         this.noteApplicationService = noteApplicationService;
+        this.userApplicationService = userApplicationService;
     }
 
-    @PostMapping(path = "/create")
+    @PostMapping
     ResponseEntity<Void> create(
             @RequestBody NoteRequestDto dto,
-            UriComponentsBuilder uriComponentsBuilder
+            UriComponentsBuilder uriComponentsBuilder,
+            Principal principal
     ) {
 
-        Note note = NoteMapper.fromNoteRequestDto(dto);
+        User user = userApplicationService.findBy(principal.getName());
+        Note note = NoteMapper.from(dto, user);
 
         noteApplicationService.create(note);
 
@@ -54,27 +62,29 @@ class NoteController {
     @PostMapping("/{id}")
     ResponseEntity<Void> update(
             @PathVariable Long id,
-            @RequestBody NoteRequestDto request
+            @RequestBody NoteRequestDto request,
+            Principal principal
     ) {
 
-        try {
-            noteApplicationService.update(id, request.getText());
-            return ResponseEntity.noContent().build();
-        } catch (Exception exception) {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Note> note = noteApplicationService.update(
+                id,
+                request.getText(),
+                principal.getName()
+            );
+
+        if (note.isEmpty()) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(
-            @PathVariable Long id
+            @PathVariable Long id,
+            Principal principal
     ) {
 
-        try {
-            noteApplicationService.deleteBy(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception exception) {
-            return ResponseEntity.notFound().build();
-        }
+        noteApplicationService.deleteBy(id, principal.getName());
+
+        return ResponseEntity.noContent().build();
     }
 }

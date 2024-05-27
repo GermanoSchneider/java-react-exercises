@@ -1,16 +1,15 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
+import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity.NoteEntityBuilder;
 import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
-import org.aspectj.weaver.ast.Not;
 
 import java.time.LocalDateTime;
 
 import static com.feefo.note_web_app_web_service.domain.note.Note.NoteBuilder;
 import static com.feefo.note_web_app_web_service.domain.note.Note.builder;
-import static com.feefo.note_web_app_web_service.infrastructure.user.UserMapper.*;
 
 public class NoteMapper {
 
@@ -39,18 +38,20 @@ public class NoteMapper {
     public static NoteResponseDto toNoteResponseDto(Note note) {
 
         return new NoteResponseDto(
+                note.getId(),
                 note.getText(),
                 note.getCreation(),
                 note.getLastUpdate()
         );
     }
 
-    public static Note fromNoteRequestDto(NoteRequestDto dto) {
+    public static Note from(NoteRequestDto dto, User user) {
 
         return builder()
                 .text(dto.getText())
                 .creation(LocalDateTime.now())
                 .lastUpdate(LocalDateTime.now())
+                .user(user)
                 .build();
     }
 }

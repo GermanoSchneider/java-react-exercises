@@ -1,24 +1,26 @@
 package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
+import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
+import static com.feefo.note_web_app_web_service.ModelFixture.userBuilder;
+import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.feefo.note_web_app_web_service.ModelFixture;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
 import com.feefo.note_web_app_web_service.domain.user.User;
+import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
+import com.feefo.note_web_app_web_service.infrastructure.user.UserFixture;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-
-import static com.feefo.note_web_app_web_service.ModelFixture.*;
-import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @Import({NoteDatabaseRepository.class})
@@ -46,20 +48,23 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldFindAllNotesByUserNameWithSuccess() {
 
-        Note note = ModelFixture.noteBuilder().id(1L).user(null).build();
+        User user = ModelFixture.userBuilder().id(null).build();
+        UserEntity savedUserEntity = testEntityManager.persist(UserFixture.buildFrom(user));
 
-        User user = userBuilder().id(null).notes(List.of()).build();
-
+        Note note = ModelFixture.noteBuilder()
+            .id(null)
+            .user(UserFixture.buildFrom(savedUserEntity))
+            .build();
 
         NoteEntity savedNoteEntity = testEntityManager.persist(buildFrom(note));
 
         Collection<Note> findNewNote = noteRepository.findAllBy(note.getUser().getName());
 
         findNewNote.forEach(persistedNote ->
+
             assertThat(savedNoteEntity)
                     .usingRecursiveComparison()
-                    .ignoringFields("id")
-                    .isEqualTo(note)
+                    .isEqualTo(persistedNote)
         );
     }
 
@@ -67,37 +72,50 @@ class NoteRepositoryTest {
     @DirtiesContext
     void shouldUpdateANoteWithSuccess() {
 
-        User user = userBuilder().id(null).build();
-        Note note = ModelFixture.noteBuilder().id(null).user(user).build();
+        User user = ModelFixture.userBuilder().id(null).build();
+        UserEntity savedUserEntity = testEntityManager.persist(UserFixture.buildFrom(user));
+
+        Note note = ModelFixture
+            .noteBuilder().id(null)
+            .user(UserFixture.buildFrom(savedUserEntity))
+            .build();
 
         NoteEntity noteEntity = testEntityManager.persist(buildFrom(note));
 
         String newText = "updated dummy text";
 
-        Note updatedNote = noteRepository.update(noteEntity.getId(), newText);
+        Optional<Note> updatedOptionalNote = noteRepository.update(noteEntity.getId(), newText, user.getName());
 
-        LocalDateTime lastUpdate = updatedNote.getLastUpdate().withNano(0);
+        if (updatedOptionalNote.isPresent()) {
 
-        assertThat(updatedNote)
+            Note updatedNote = updatedOptionalNote.get();
+
+            LocalDateTime lastUpdate = updatedNote.getLastUpdate().withNano(0);
+
+            assertThat(updatedNote)
                 .hasFieldOrPropertyWithValue("id", noteEntity.getId())
                 .hasFieldOrPropertyWithValue("text", newText)
                 .hasFieldOrPropertyWithValue("creation", noteEntity.getCreation());
 
-        assertThat(lastUpdate).isEqualTo(LocalDateTime.now().withNano(0));
+            assertThat(updatedNote.getUser())
+                .usingRecursiveComparison()
+                .isEqualTo(UserFixture.buildFrom(noteEntity.getUser()));
+
+            assertThat(lastUpdate).isEqualTo(LocalDateTime.now().withNano(0));
+        }
+
+        assertThat(updatedOptionalNote).isNotEmpty();
     }
 
     @Test
     @DirtiesContext
-    void shouldFailWhenTryingToUpdateANonExistingNote() {
+    void shouldDoNothingWhenTryingToUpdateANonExistingNote() {
 
-        String expectedErrorMessage = "The note with id 1 was not found";
+        String newText = "updated dummy text";
 
-        Exception exception = assertThrows(
-                Exception.class,
-                () -> noteRepository.update(1L, "updated dummy text")
-        );
+        Optional<Note> emptyNote = noteRepository.update(2L, newText, "john");
 
-        assertThat(exception.getMessage()).isEqualTo(expectedErrorMessage);
+        assertThat(emptyNote).isEmpty();
     }
 
     @Test
@@ -109,7 +127,7 @@ class NoteRepositoryTest {
 
         NoteEntity noteEntity = testEntityManager.persist(buildFrom(note));
 
-        noteRepository.deleteBy(noteEntity.getId());
+        noteRepository.deleteBy(noteEntity.getId(), user.getName());
 
         NoteEntity findNoteEntity = testEntityManager.find(NoteEntity.class, noteEntity.getId());
 

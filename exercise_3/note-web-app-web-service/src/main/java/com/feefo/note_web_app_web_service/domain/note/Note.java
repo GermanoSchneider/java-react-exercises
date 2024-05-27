@@ -22,7 +22,7 @@ public class Note extends Model {
         this.text = validate("text", noteBuilder.text);
         this.creation = validate("creation", noteBuilder.creation);
         this.lastUpdate = validate("lastUpdate", noteBuilder.lastUpdate);
-        this.user = validate("user", noteBuilder.user);;
+        this.user = validate("user", noteBuilder.user);
     }
 
     public static class NoteBuilder {

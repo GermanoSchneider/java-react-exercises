@@ -1,22 +1,21 @@
-package com.feefo.note_web_app_web_service.infrastructure.user;
+package com.feefo.note_web_app_web_service.infrastructure.user.persistence;
 
-import com.feefo.note_web_app_web_service.domain.note.Note;
+import static com.feefo.note_web_app_web_service.ModelFixture.buildUser;
+import static com.feefo.note_web_app_web_service.ModelFixture.userBuilder;
+import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture.buildFrom;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
+import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserDatabaseRepository;
+import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.List;
-
-import static com.feefo.note_web_app_web_service.ModelFixture.*;
-import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture.buildFrom;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @Import({UserDatabaseRepository.class})
@@ -44,17 +43,15 @@ class UserRepositoryTest {
     @DirtiesContext
     void shouldFindUserByNameWithSuccess() {
 
-        Note note = noteBuilder().id(null).build();
-        User user = userBuilder().id(null).notes(List.of(note)).build();
+        User user = userBuilder().id(null).build();
 
-        UserEntity userEntity = buildFrom(user);
-        UserEntity savedUser = testEntityManager.persist(userEntity);
+        UserEntity savedUser = testEntityManager.persist(buildFrom(user));
 
         User findUser = userRepository.findByName(savedUser.getName());
 
-        assertThat(findUser)
+        assertThat(savedUser)
                 .usingRecursiveComparison()
-                .isEqualTo(savedUser);
+                .isEqualTo(findUser);
     }
 
     @Test

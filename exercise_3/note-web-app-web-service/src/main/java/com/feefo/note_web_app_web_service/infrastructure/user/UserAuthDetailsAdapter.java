@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.infrastructure.user.auth;
+package com.feefo.note_web_app_web_service.infrastructure.user;
 
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.user.User;

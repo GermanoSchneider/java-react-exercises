@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.infrastructure.user;
+package com.feefo.note_web_app_web_service.infrastructure.user.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

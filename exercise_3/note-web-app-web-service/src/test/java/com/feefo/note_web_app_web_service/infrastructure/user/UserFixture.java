@@ -6,6 +6,7 @@ import com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 
+import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
