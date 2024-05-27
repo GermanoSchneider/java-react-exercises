@@ -39,17 +39,4 @@ class UserTest {
 
         assertEquals(expectedMessage, exception.getMessage());
     }
-
-    @Test
-    void shouldFailWhenTryingToCreateANoteModelWithoutNotes() {
-
-        ConstraintException exception = assertThrows(
-                ConstraintException.class,
-                () -> userBuilder().notes(null).build()
-        );
-
-        String expectedMessage = "notes should not be a null value";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
 }

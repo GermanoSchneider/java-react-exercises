@@ -3,6 +3,7 @@ package com.feefo.note_web_app_web_service.domain.user;
 import com.feefo.note_web_app_web_service.domain.Model;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class User extends Model {
@@ -13,13 +14,12 @@ public class User extends Model {
 
     private final String password;
 
-    private final Collection<Note> notes;
+    private final Collection<Note> notes = new ArrayList<>();
 
     private User(UserBuilder userBuilder) {
         this.id = userBuilder.id;
         this.name = validate("name", userBuilder.name);
         this.password = validate("password", userBuilder.password);
-        this.notes = validate("notes", userBuilder.notes);
     }
 
     public static class UserBuilder {
@@ -29,8 +29,6 @@ public class User extends Model {
         private String name;
 
         private String password;
-
-        private Collection<Note> notes;
 
         public UserBuilder id(Long id) {
             this.id = id;
@@ -44,11 +42,6 @@ public class User extends Model {
 
         public UserBuilder password(String password) {
             this.password = password;
-            return this;
-        }
-
-        public UserBuilder notes(Collection<Note> notes) {
-            this.notes = notes;
             return this;
         }
 

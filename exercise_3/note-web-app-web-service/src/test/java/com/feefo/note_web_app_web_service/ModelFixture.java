@@ -40,7 +40,6 @@ public class ModelFixture {
         return User.builder()
                 .id(1L)
                 .name("john")
-                .password("123")
-                .notes(List.of());
+                .password("123");
     }
 }

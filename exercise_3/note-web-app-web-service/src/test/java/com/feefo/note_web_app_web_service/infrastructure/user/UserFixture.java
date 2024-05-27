@@ -32,7 +32,6 @@ public class UserFixture {
                 .id(user.getId())
                 .name(user.getName())
                 .password(user.getPassword())
-                .notes(getNotesFrom(user.getNotes()))
                 .build();
     }
 

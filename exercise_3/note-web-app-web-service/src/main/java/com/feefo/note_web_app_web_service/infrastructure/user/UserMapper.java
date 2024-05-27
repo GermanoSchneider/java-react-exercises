@@ -23,13 +23,17 @@ public class UserMapper {
                 .notes(getNoteEntitiesFrom(user.getNotes()));
     }
 
-    public static User.UserBuilder from(UserEntity userEntity) {
+    public static User from(UserEntity userEntity) {
 
-        return User.builder()
+        User user =  User.builder()
                 .id(userEntity.getId())
                 .name(userEntity.getName())
                 .password(userEntity.getPassword())
-                .notes(getNotesFrom(userEntity.getNotes()));
+                .build();
+
+        user.getNotes().addAll(getNotesFrom(userEntity.getNotes()));
+
+        return user;
     }
 
     private static Collection<NoteEntity> getNoteEntitiesFrom(Collection<Note> notes) {
