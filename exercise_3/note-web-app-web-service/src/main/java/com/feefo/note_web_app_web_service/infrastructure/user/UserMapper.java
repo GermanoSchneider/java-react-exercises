@@ -25,7 +25,7 @@ public class UserMapper {
 
     public static User from(UserEntity userEntity) {
 
-        User user =  User.builder()
+        User user = User.builder()
                 .id(userEntity.getId())
                 .name(userEntity.getName())
                 .password(userEntity.getPassword())
