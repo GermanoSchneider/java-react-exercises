@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
+import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
-@Import({UserDatabaseRepository.class, UserMapper.class, BCryptPasswordEncoder.class})
+@Import({UserDatabaseRepository.class,
+    UserMapper.class, NoteMapper.class, BCryptPasswordEncoder.class})
 class UserRepositoryTest {
 
     @Autowired

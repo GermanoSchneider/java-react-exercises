@@ -76,6 +76,16 @@ public class NoteEntity {
         }
     }
 
+    public NoteEntityBuilder toBuilder() {
+
+        return builder()
+            .id(id)
+            .text(text)
+            .creation(creation)
+            .lastUpdate(lastUpdate)
+            .owner(owner);
+    }
+
     public static NoteEntityBuilder builder() {
         return new NoteEntityBuilder();
     }

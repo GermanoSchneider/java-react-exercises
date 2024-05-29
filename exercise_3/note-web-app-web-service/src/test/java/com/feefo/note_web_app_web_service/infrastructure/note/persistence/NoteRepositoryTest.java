@@ -4,20 +4,23 @@ import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
 import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
 import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
+import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
-@Import({NoteDatabaseRepository.class})
+@Import({NoteDatabaseRepository.class, NoteMapper.class})
 class NoteRepositoryTest {
 
     @Autowired
@@ -26,16 +29,24 @@ class NoteRepositoryTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
+    @SpyBean
+    private NoteMapper noteMapper;
+
     @Test
     @DirtiesContext
     void shouldCreateANewNoteWithSuccess() {
 
-        Note savedNote = noteRepository.save(buildNote());
+        Note note = buildNote();
+
+        Note savedNote = noteRepository.save(note);
         NoteEntity noteFound = testEntityManager.find(NoteEntity.class, 1);
 
         assertThat(noteFound)
                 .usingRecursiveComparison()
                 .isEqualTo(savedNote);
+
+        verify(noteMapper).toEntity(note);
+        verify(noteMapper).fromEntity(noteFound);
     }
 
     @Test
@@ -56,6 +67,8 @@ class NoteRepositoryTest {
                     .usingRecursiveComparison()
                     .isEqualTo(persistedNote)
         );
+
+        verify(noteMapper).fromEntity(savedNoteEntity);
     }
 
     @Test
@@ -82,6 +95,8 @@ class NoteRepositoryTest {
             .isEqualTo(savedNote);
 
         assertThat(updatedNote.getText()).isEqualTo(newText);
+
+        verify(noteMapper).fromEntity(savedNote);
     }
 
     @Test

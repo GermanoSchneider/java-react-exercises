@@ -15,6 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
+    private final NoteMapper mapper;
+
+    public UserMapper(NoteMapper mapper) {
+        this.mapper = mapper;
+    }
+
     public User fromEntity(UserEntity userEntity) {
 
         User user = User.builder()
@@ -53,11 +59,11 @@ public class UserMapper {
             .build();
     }
 
-    private static Collection<NoteEntity> getNoteEntitiesFrom(Collection<Note> notes) {
+    private Collection<NoteEntity> getNoteEntitiesFrom(Collection<Note> notes) {
 
         return notes
             .stream()
-            .map(note -> NoteMapper.from(note).build())
+            .map(mapper::toEntity)
             .collect(Collectors.toList());
     }
 
@@ -65,7 +71,7 @@ public class UserMapper {
 
         return notes
                 .stream()
-                .map(noteEntity -> NoteMapper.from(noteEntity).build())
+                .map(mapper::fromEntity)
                 .collect(Collectors.toList());
     }
 }

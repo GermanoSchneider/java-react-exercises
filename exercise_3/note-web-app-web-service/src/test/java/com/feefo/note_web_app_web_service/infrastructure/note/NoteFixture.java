@@ -1,8 +1,8 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
 import com.feefo.note_web_app_web_service.domain.note.Note;
+import com.feefo.note_web_app_web_service.infrastructure.note.controller.NoteResponseDto;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
-import com.feefo.note_web_app_web_service.infrastructure.user.UserFixture;
 
 public class NoteFixture {
 
@@ -30,7 +30,7 @@ public class NoteFixture {
                 .build();
     }
 
-    public static NoteResponseDto toNoteResponseDto(Note note) {
+    public static NoteResponseDto toResponse(Note note) {
 
         return new NoteResponseDto(
             note.getId(),

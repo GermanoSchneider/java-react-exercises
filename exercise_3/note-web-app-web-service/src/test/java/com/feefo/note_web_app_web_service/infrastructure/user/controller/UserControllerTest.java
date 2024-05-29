@@ -17,6 +17,7 @@ import com.feefo.note_web_app_web_service.SecurityConfigTest;
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.User.UserBuilder;
+import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
 import java.text.DateFormat;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 @WebMvcTest(UserController.class)
-@Import({SecurityConfigTest.class, UserApplicationService.class, UserMapper.class})
+@Import({SecurityConfigTest.class, UserApplicationService.class, UserMapper.class, NoteMapper.class})
 class UserControllerTest {
 
   @Autowired

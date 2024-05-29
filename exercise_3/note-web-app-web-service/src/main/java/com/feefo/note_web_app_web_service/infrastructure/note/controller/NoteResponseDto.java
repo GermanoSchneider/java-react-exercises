@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.infrastructure.note;
+package com.feefo.note_web_app_web_service.infrastructure.note.controller;
 
 import java.time.LocalDateTime;
 

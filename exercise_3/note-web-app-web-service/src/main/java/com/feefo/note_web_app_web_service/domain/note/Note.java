@@ -1,8 +1,6 @@
 package com.feefo.note_web_app_web_service.domain.note;
 
 import com.feefo.note_web_app_web_service.domain.Model;
-import com.feefo.note_web_app_web_service.domain.user.User;
-
 import java.time.LocalDateTime;
 
 public class Note extends Model {
@@ -65,10 +63,6 @@ public class Note extends Model {
         public Note build() {
             return new Note(this);
         }
-    }
-
-    public NoteBuilder toBuilder() {
-        return builder();
     }
 
     public static NoteBuilder builder() {
