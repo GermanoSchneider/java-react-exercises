@@ -11,17 +11,18 @@ import com.feefo.note_web_app_web_service.domain.user.UserRepository;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
 @Import({UserDatabaseRepository.class,
-    UserMapper.class, NoteMapper.class, BCryptPasswordEncoder.class})
+    UserMapper.class, NoteMapper.class})
 class UserRepositoryTest {
 
     @Autowired
@@ -32,6 +33,9 @@ class UserRepositoryTest {
 
     @SpyBean
     private UserMapper userMapper;
+
+    @Spy
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DirtiesContext
