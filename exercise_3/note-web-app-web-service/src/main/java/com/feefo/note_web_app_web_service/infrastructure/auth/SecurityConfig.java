@@ -1,7 +1,5 @@
 package com.feefo.note_web_app_web_service.infrastructure.auth;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -26,6 +24,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(KeyProperties.class)
@@ -46,7 +46,7 @@ public class SecurityConfig  {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests((auth) ->
-            auth.requestMatchers("/auth/**")
+            auth.requestMatchers("/auth/user")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

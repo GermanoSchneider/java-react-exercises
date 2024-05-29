@@ -1,34 +1,14 @@
 package com.feefo.note_web_app_web_service.infrastructure.note.controller;
 
-import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
-import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.feefo.note_web_app_web_service.SecurityConfigTest;
 import com.feefo.note_web_app_web_service.application.NoteApplicationService;
-import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.Note.NoteBuilder;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
-import java.text.DateFormat;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -41,6 +21,20 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+
+import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
+import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 @WebMvcTest(NoteController.class)
 @Import({SecurityConfigTest.class, NoteMapper.class})
 class NoteControllerTest {
@@ -50,9 +44,6 @@ class NoteControllerTest {
 
     @MockBean
     private NoteApplicationService noteApplicationService;
-
-    @MockBean
-    private UserApplicationService userApplicationService;
 
     @Captor
     private ArgumentCaptor<Note> noteArgumentCaptor;
@@ -115,6 +106,7 @@ class NoteControllerTest {
 
       verify(noteMapper).from(request, note.getOwner());
       verify(noteMapper).toResponse(note);
+      verify(noteApplicationService).create(noteArgumentCaptor.getValue());
     }
 
   @Test
@@ -149,6 +141,7 @@ class NoteControllerTest {
     assertThat(jsonResponse).isEqualTo(resultResponse);
 
     verify(noteMapper).toResponse(note);
+    verify(noteApplicationService).update(note.getId(), request.getText(), note.getOwner());
   }
 
   @Test
@@ -183,6 +176,7 @@ class NoteControllerTest {
     assertThat(jsonResponse).isEqualTo(resultResponse);
 
     verify(noteMapper).toResponse(note);
+    verify(noteApplicationService).findAllBy(note.getOwner());
   }
 
 
@@ -205,6 +199,9 @@ class NoteControllerTest {
     int statusCode = result.getResponse().getStatus();
 
     assertThat(NO_CONTENT.value()).isEqualTo(statusCode);
+
+    verifyNoInteractions(noteMapper);
+    verify(noteApplicationService).deleteBy(note.getId(), note.getOwner());
   }
 
   private LocalDateTime getWithoutNano(LocalDateTime localDateTime) {
