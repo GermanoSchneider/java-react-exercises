@@ -1,14 +1,12 @@
 package com.feefo.note_web_app_web_service.infrastructure.note;
 
+import static com.feefo.note_web_app_web_service.domain.note.Note.NoteBuilder;
+import static com.feefo.note_web_app_web_service.domain.note.Note.builder;
+
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity.NoteEntityBuilder;
-import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
-
 import java.time.LocalDateTime;
-
-import static com.feefo.note_web_app_web_service.domain.note.Note.NoteBuilder;
-import static com.feefo.note_web_app_web_service.domain.note.Note.builder;
 
 public class NoteMapper {
 

@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.feefo.note_web_app_web_service.SpringAuthConfig;
+import com.feefo.note_web_app_web_service.SecurityConfigTest;
 import com.feefo.note_web_app_web_service.application.NoteApplicationService;
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.note.Note;
@@ -31,7 +31,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(NoteController.class)
-@Import(SpringAuthConfig.class)
+@Import(SecurityConfigTest.class)
 class NoteControllerTest {
 
     @Autowired

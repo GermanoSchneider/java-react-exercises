@@ -2,7 +2,6 @@ package com.feefo.note_web_app_web_service.domain.user;
 
 import com.feefo.note_web_app_web_service.domain.Model;
 import com.feefo.note_web_app_web_service.domain.note.Note;
-
 import java.util.ArrayList;
 import java.util.Collection;
 

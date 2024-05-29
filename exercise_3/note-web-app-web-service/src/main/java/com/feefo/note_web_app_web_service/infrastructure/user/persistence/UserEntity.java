@@ -1,12 +1,17 @@
 package com.feefo.note_web_app_web_service.infrastructure.user.persistence;
 
-import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
-import jakarta.persistence.*;
-
-import java.util.Collection;
-
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.SEQUENCE;
+
+import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users")
@@ -67,6 +72,15 @@ public class UserEntity {
             return new UserEntity(this);
         }
 
+    }
+
+    public UserEntityBuilder toBuilder() {
+
+        return builder()
+            .id(id)
+            .name(name)
+            .password(password)
+            .notes(notes);
     }
 
     public static UserEntityBuilder builder() {

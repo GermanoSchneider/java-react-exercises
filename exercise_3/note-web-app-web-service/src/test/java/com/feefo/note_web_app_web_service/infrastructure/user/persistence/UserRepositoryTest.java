@@ -4,18 +4,22 @@ import static com.feefo.note_web_app_web_service.ModelFixture.buildUser;
 import static com.feefo.note_web_app_web_service.ModelFixture.userBuilder;
 import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture.buildFrom;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
+import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DataJpaTest
-@Import({UserDatabaseRepository.class})
+@Import({UserDatabaseRepository.class, UserMapper.class, BCryptPasswordEncoder.class})
 class UserRepositoryTest {
 
     @Autowired
@@ -24,16 +28,24 @@ class UserRepositoryTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
+    @SpyBean
+    private UserMapper userMapper;
+
     @Test
     @DirtiesContext
     void shouldCreateANewUserWithSuccess() {
 
-        User savedUser = userRepository.save(buildUser());
-        UserEntity findNewUser = testEntityManager.find(UserEntity.class, 1);
+        User user = buildUser();
 
-        assertThat(findNewUser)
+        User savedUser = userRepository.save(user);
+        UserEntity userFound = testEntityManager.find(UserEntity.class, 1);
+
+        assertThat(userFound)
                 .usingRecursiveComparison()
                 .isEqualTo(savedUser);
+
+        verify(userMapper).toEntity(user);
+        verify(userMapper).fromEntity(userFound);
     }
 
     @Test
@@ -49,5 +61,7 @@ class UserRepositoryTest {
         assertThat(savedUser)
             .usingRecursiveComparison()
             .isEqualTo(userFound);
+
+        verify(userMapper).fromEntity(savedUser);
     }
 }

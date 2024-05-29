@@ -2,33 +2,37 @@ package com.feefo.note_web_app_web_service.infrastructure.user.persistence;
 
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.domain.user.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-
-import static com.feefo.note_web_app_web_service.infrastructure.user.UserMapper.from;
 
 @Repository
 class UserDatabaseRepository implements UserRepository {
 
     private final UserJpaRepository userJpaRepository;
 
-    private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    private final UserMapper mapper;
 
-    UserDatabaseRepository(UserJpaRepository userJpaRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    UserDatabaseRepository(UserJpaRepository userJpaRepository, UserMapper mapper,
+        PasswordEncoder passwordEncoder) {
         this.userJpaRepository = userJpaRepository;
+        this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User save(User user) {
 
-        UserEntity userEntity = from(user)
-            .password(PASSWORD_ENCODER.encode(user.getPassword()))
+        UserEntity userEntity = mapper.toEntity(user)
+            .toBuilder()
+            .password(passwordEncoder.encode(user.getPassword()))
             .build();
 
         UserEntity savedUser = userJpaRepository.save(userEntity);
 
-        return from(savedUser);
+        return mapper.fromEntity(savedUser);
     }
 
     @Override
@@ -36,6 +40,6 @@ class UserDatabaseRepository implements UserRepository {
 
         UserEntity user = userJpaRepository.findByName(name);
 
-        return from(user);
+        return mapper.fromEntity(user);
     }
 }
