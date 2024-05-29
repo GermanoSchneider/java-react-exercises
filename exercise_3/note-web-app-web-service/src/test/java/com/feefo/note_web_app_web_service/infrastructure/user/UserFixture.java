@@ -3,9 +3,7 @@ package com.feefo.note_web_app_web_service.infrastructure.user;
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture;
-import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
 import com.feefo.note_web_app_web_service.infrastructure.note.persistence.NoteEntity;
-
 import com.feefo.note_web_app_web_service.infrastructure.user.controller.UserRequestDto;
 import com.feefo.note_web_app_web_service.infrastructure.user.controller.UserResponseDto;
 import com.feefo.note_web_app_web_service.infrastructure.user.persistence.UserEntity;
@@ -67,14 +65,6 @@ public class UserFixture {
         return notes
                 .stream()
                 .map(NoteFixture::buildFrom)
-                .collect(Collectors.toList());
-    }
-
-    private static Collection<Note> getNotesFrom(Collection<NoteEntity> notes) {
-
-        return notes
-                .stream()
-                .map(noteEntity -> NoteMapper.from(noteEntity).build())
                 .collect(Collectors.toList());
     }
 }

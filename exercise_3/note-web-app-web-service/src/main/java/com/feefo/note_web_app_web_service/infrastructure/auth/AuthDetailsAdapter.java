@@ -1,4 +1,4 @@
-package com.feefo.note_web_app_web_service.infrastructure.user;
+package com.feefo.note_web_app_web_service.infrastructure.auth;
 
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.user.User;
@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-class UserAuthDetailsAdapter implements UserDetailsService {
+class AuthDetailsAdapter implements UserDetailsService {
 
     private final UserApplicationService applicationService;
 
-    UserAuthDetailsAdapter(UserRepository userRepository, UserApplicationService applicationService) {
+    AuthDetailsAdapter(UserRepository userRepository, UserApplicationService applicationService) {
         this.applicationService = applicationService;
     }
 
