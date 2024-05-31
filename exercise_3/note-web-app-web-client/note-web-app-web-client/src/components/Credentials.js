@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPassword, setUsername } from "../reducers/credential-reducer";
+import { resetCredentials, setPassword, setUsername } from "../reducers/credential-reducer";
 
 const Credentials = () => {
 
-    const dispatch = useDispatch()
     const { username, password } = useSelector(state => state.credential);
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(resetCredentials())
+    }, [])
 
     const handleUsernameChange = (event) => {
         dispatch(setUsername(event.target.value));
@@ -26,10 +30,8 @@ const Credentials = () => {
                 <input type="password" name="password" value={password} onChange={handlePasswordChange} />
             </label><br></br>
         </div>
-
     )
 
-    
 }
 
 export default Credentials;

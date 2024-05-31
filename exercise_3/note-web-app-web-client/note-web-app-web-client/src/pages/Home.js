@@ -1,8 +1,13 @@
-const Home = () => {
+import { useSelector } from "react-redux";
+import { getUsername } from "../auth/storage";
 
+const Home = () => {
+    
     return (
         <div>
-            <h1>Welcome</h1>
+            <header>
+                <h1>Hello, {getUsername()}</h1> 
+            </header>
         </div>
     )
 }
