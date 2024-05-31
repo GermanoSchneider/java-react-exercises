@@ -1,29 +1,23 @@
+import { useSelector } from "react-redux";
 import api from "../api"
 import Credentials from "../components/Credentials";
-import { getPassword, getUsername, subscribe } from "../stores/credentials-store";
 
 const SignIn = () => {
 
-    console.log();
+    const { username, password } = useSelector(state => state.credential);
 
     const login = () => {
 
-        subscribe(() => {
-            const username = getUsername();
-            const password = getPassword();
-
-            const basicAuth = {
-                'auth': {
-                    'username': username,
-                    'password': password
-                }
+        const basicAuth = {
+            auth: {
+                username: username,
+                password: password
             }
-    
-            api.post('auth/login', {}, basicAuth)
-                .then(response => console.log(response))
-                .catch(erro => console.log(erro))
+        }
 
-        })
+        api.post('auth/login', {}, basicAuth)
+            .then(response => console.log(response))
+            .catch(erro => console.log(erro))
     }
 
     return (
