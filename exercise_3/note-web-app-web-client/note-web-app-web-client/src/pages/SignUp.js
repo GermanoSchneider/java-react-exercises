@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import api from "../api";
+import api from "../api/api";
 import Credentials from "../components/Credentials";
 
 const SignUp = () => {
@@ -24,7 +24,7 @@ const SignUp = () => {
             password: password  
         }
 
-        api.post('auth/user', payload)
+        api().post('auth/user', payload)
             .then(response => console.log(response))
             .catch(erro => console.log(erro))
     }

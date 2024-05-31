@@ -1,10 +1,14 @@
 import { useSelector } from "react-redux";
-import api from "../api"
+import api from "../api/api"
 import Credentials from "../components/Credentials";
+import { authenticate } from "../auth/auth-service";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
 
     const { username, password } = useSelector(state => state.credential);
+
+    const navigate = useNavigate();
 
     const login = () => {
 
@@ -16,8 +20,10 @@ const SignIn = () => {
         }
 
         api.post('auth/login', {}, basicAuth)
-            .then(response => console.log(response))
-            .catch(erro => console.log(erro))
+            .then(response => {
+                authenticate(response.data);
+                navigate("/")
+            });
     }
 
     return (
