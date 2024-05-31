@@ -1,7 +1,5 @@
 package com.feefo.note_web_app_web_service.infrastructure.auth;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -25,6 +23,14 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -45,8 +51,10 @@ public class SecurityConfig  {
 
         http.csrf(AbstractHttpConfigurer::disable);
 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         http.authorizeHttpRequests((auth) ->
-            auth.requestMatchers("/auth/**")
+            auth.requestMatchers("/auth/user")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -79,6 +87,18 @@ public class SecurityConfig  {
         provider.setPasswordEncoder(passwordEncoder());
 
         return provider;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "DELETE", "PUT"));
+        configuration.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

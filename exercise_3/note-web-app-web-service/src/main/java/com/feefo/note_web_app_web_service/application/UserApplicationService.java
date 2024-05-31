@@ -22,9 +22,9 @@ public class UserApplicationService {
         return userRepository.save(user);
     }
 
-    public String authenticate(String subject) {
+    public String authenticate(String username) {
 
-        return tokenService.generate(subject);
+        return tokenService.generateTokenWith(username);
     }
 
     public User findBy(String name) {

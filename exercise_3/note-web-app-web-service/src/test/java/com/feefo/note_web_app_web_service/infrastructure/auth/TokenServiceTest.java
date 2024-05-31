@@ -1,22 +1,19 @@
 package com.feefo.note_web_app_web_service.infrastructure.auth;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.security.oauth2.jose.jws.SignatureAlgorithm.RS256;
-
 import com.feefo.note_web_app_web_service.domain.TokenService;
-import java.time.Instant;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.oauth2.jwt.JwsHeader;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
+
+import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.springframework.security.oauth2.jose.jws.SignatureAlgorithm.RS256;
 
 @SpringBootTest(classes = {TokenAdapter.class, JwtEncoder.class})
 public class TokenServiceTest {
@@ -58,7 +55,7 @@ public class TokenServiceTest {
         .when(encoder)
         .encode(jwtEncoderParametersArgumentCaptor.capture());
 
-    String token = tokenService.generate(subject);
+    String token = tokenService.generateTokenWith(subject);
 
     assertThat(expectedToken).isEqualTo(token);
   }

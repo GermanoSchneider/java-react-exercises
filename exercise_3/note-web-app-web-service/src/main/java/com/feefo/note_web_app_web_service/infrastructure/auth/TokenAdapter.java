@@ -1,13 +1,14 @@
 package com.feefo.note_web_app_web_service.infrastructure.auth;
 
-import static org.springframework.security.oauth2.jwt.JwtEncoderParameters.from;
-
 import com.feefo.note_web_app_web_service.domain.TokenService;
-import java.time.Instant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+
+import static org.springframework.security.oauth2.jwt.JwtEncoderParameters.from;
 
 @Component
 class TokenAdapter implements TokenService {
@@ -22,7 +23,7 @@ class TokenAdapter implements TokenService {
   }
 
   @Override
-  public String generate(String subject) {
+  public String generateTokenWith(String subject) {
 
     Instant now = Instant.now();
 
