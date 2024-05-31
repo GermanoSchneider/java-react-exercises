@@ -1,14 +1,14 @@
 import './App.css';
 import React from 'react';
-import SignIn from './pages/SignIn';
 import { Provider } from 'react-redux';
 import store from './stores/store';
+import SignUp from './pages/SignUp';
 
 
 function App() {
 
   return <Provider store={store}>
-      <SignIn />
+      <SignUp />
   </Provider>
 }
 
