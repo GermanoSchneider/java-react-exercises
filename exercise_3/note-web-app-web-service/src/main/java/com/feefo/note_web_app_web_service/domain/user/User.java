@@ -1,24 +1,31 @@
 package com.feefo.note_web_app_web_service.domain.user;
 
-import com.feefo.note_web_app_web_service.domain.Model;
+import com.feefo.note_web_app_web_service.domain.ConstraintValidator;
 import com.feefo.note_web_app_web_service.domain.note.Note;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class User extends Model {
+import static com.feefo.note_web_app_web_service.domain.ConstraintValidator.*;
+
+public class User {
 
     private final Long id;
 
+    @NotBlank(message = "should not be blank")
     private final String name;
 
+    @NotBlank(message = "should not be blank")
     private final String password;
 
     private final Collection<Note> notes = new ArrayList<>();
 
     private User(UserBuilder userBuilder) {
         this.id = userBuilder.id;
-        this.name = validate("name", userBuilder.name);
-        this.password = validate("password", userBuilder.password);
+        this.name = userBuilder.name;
+        this.password = userBuilder.password;
+        validate(this);
     }
 
     public static class UserBuilder {

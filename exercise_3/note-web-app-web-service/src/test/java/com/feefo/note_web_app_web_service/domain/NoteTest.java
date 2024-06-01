@@ -1,6 +1,7 @@
 package com.feefo.note_web_app_web_service.domain;
 
 import com.feefo.note_web_app_web_service.ModelFixture;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 
 import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
@@ -17,12 +18,12 @@ class NoteTest {
     @Test
     void shouldFailWhenTryingToCreateANoteModelWithoutText() {
 
-        ConstraintException exception = assertThrows(
-                ConstraintException.class,
+        ConstraintViolationException exception = assertThrows(
+                ConstraintViolationException.class,
                 () -> noteBuilder().text(null).build()
         );
 
-        String expectedMessage = "text should not be a null value";
+        String expectedMessage = "text: should not be null";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -30,12 +31,12 @@ class NoteTest {
     @Test
     void shouldFailWhenTryingToCreateANoteModelWithoutCreationDate() {
 
-        ConstraintException exception = assertThrows(
-                ConstraintException.class,
+        ConstraintViolationException exception = assertThrows(
+                ConstraintViolationException.class,
                 () -> noteBuilder().creation(null).build()
         );
 
-        String expectedMessage = "creation should not be a null value";
+        String expectedMessage = "creation: should not be null";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -43,12 +44,12 @@ class NoteTest {
     @Test
     void shouldFailWhenTryingToCreateANoteModelWithoutLastUpdateDate() {
 
-        ConstraintException exception = assertThrows(
-                ConstraintException.class,
+        ConstraintViolationException exception = assertThrows(
+                ConstraintViolationException.class,
                 () -> noteBuilder().lastUpdate(null).build()
         );
 
-        String expectedMessage = "lastUpdate should not be a null value";
+        String expectedMessage = "lastUpdate: should not be null";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -56,12 +57,12 @@ class NoteTest {
     @Test
     void shouldFailWhenTryingToCreateANoteModelWithoutOwner() {
 
-        ConstraintException exception = assertThrows(
-            ConstraintException.class,
+        ConstraintViolationException exception = assertThrows(
+                ConstraintViolationException.class,
             () -> noteBuilder().owner(null).build()
         );
 
-        String expectedMessage = "owner should not be a null value";
+        String expectedMessage = "owner: should not be blank";
 
         assertEquals(expectedMessage, exception.getMessage());
     }

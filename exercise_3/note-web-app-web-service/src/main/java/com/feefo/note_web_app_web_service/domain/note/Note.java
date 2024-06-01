@@ -1,26 +1,36 @@
 package com.feefo.note_web_app_web_service.domain.note;
 
-import com.feefo.note_web_app_web_service.domain.Model;
+import com.feefo.note_web_app_web_service.domain.ConstraintValidator;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
-public class Note extends Model {
+import static com.feefo.note_web_app_web_service.domain.ConstraintValidator.*;
+
+public class Note extends ConstraintValidator {
 
     private final Long id;
 
+    @NotNull(message = "should not be null")
     private final String text;
 
+    @NotNull(message = "should not be null")
     private final LocalDateTime creation;
 
+    @NotNull(message = "should not be null")
     private final LocalDateTime lastUpdate;
 
+    @NotBlank(message = "should not be blank")
     private final String owner;
 
     private Note(NoteBuilder noteBuilder) {
         this.id = noteBuilder.id;
-        this.text = validate("text", noteBuilder.text);
-        this.creation = validate("creation", noteBuilder.creation);
-        this.lastUpdate = validate("lastUpdate", noteBuilder.lastUpdate);
-        this.owner = validate("owner", noteBuilder.owner);
+        this.text = noteBuilder.text;
+        this.creation = noteBuilder.creation;
+        this.lastUpdate = noteBuilder.lastUpdate;
+        this.owner = noteBuilder.owner;
+        validate(this);
     }
 
     public static class NoteBuilder {
