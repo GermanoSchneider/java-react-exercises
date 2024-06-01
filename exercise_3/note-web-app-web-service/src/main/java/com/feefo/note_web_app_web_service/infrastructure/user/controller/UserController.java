@@ -3,6 +3,7 @@ package com.feefo.note_web_app_web_service.infrastructure.user.controller;
 import com.feefo.note_web_app_web_service.application.UserApplicationService;
 import com.feefo.note_web_app_web_service.domain.user.User;
 import com.feefo.note_web_app_web_service.infrastructure.user.UserMapper;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping(path = "/auth")
@@ -28,17 +28,25 @@ class UserController {
     }
 
     @PostMapping("/user")
-    ResponseEntity<UserResponseDto> create(@RequestBody UserRequestDto request) {
+    ResponseEntity<?> create(@RequestBody UserRequestDto request) {
 
-        User userRequest = mapper.fromRequest(request);
+        try {
 
-        User user = userApplicationService.register(userRequest);
+            User userRequest = mapper.fromRequest(request);
 
-        UserResponseDto userResponse = mapper.toResponse(user);
+            User user = userApplicationService.register(userRequest);
 
-        return ResponseEntity
-            .status(CREATED)
-            .body(userResponse);
+            UserResponseDto userResponse = mapper.toResponse(user);
+
+            return ResponseEntity
+                    .status(CREATED)
+                    .body(userResponse);
+
+        } catch (ConstraintViolationException violationException) {
+
+            return ResponseEntity.status(BAD_REQUEST)
+                    .body(violationException.getMessage().split(", "));
+        }
     }
 
     @PostMapping("/login")

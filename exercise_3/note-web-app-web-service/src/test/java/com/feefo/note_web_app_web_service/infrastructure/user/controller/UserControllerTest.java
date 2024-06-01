@@ -1,5 +1,6 @@
 package com.feefo.note_web_app_web_service.infrastructure.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -28,8 +30,7 @@ import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture
 import static com.feefo.note_web_app_web_service.infrastructure.user.UserFixture.toUserResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -91,6 +92,32 @@ class UserControllerTest {
 
     verify(userApplicationService).register(userArgumentCaptor.getValue());
     verify(userMapper).toResponse(user);
+  }
+
+  @Test
+  void shouldFailWhenTryingToRegisterAInvalidUser() throws Exception {
+
+    UserRequestDto request = new UserRequestDto("", "");
+    String[] response = {"password: should not be blank", "name: should not be blank"};
+
+    String jsonRequest = mapper.writeValueAsString(request);
+    String jsonResponse = mapper.writeValueAsString(response);
+
+    MvcResult result = mockMvc.perform(
+            post("/auth/user")
+                    .contentType(APPLICATION_JSON)
+                    .content(jsonRequest)
+    ).andReturn();
+
+    int statusCode = result.getResponse().getStatus();
+    String resultRequest = result.getRequest().getContentAsString();
+    String resultResponse = result.getResponse().getContentAsString();
+
+    assertThat(BAD_REQUEST.value()).isEqualTo(statusCode);
+    assertThat(jsonRequest).isEqualTo(resultRequest);
+    assertThat(jsonResponse).isEqualTo(resultResponse);
+
+    verify(userMapper).fromRequest(request);
   }
 
   @Test
