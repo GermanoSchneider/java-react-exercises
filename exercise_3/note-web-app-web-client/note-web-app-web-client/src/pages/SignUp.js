@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register } from "../api/auth-api";
 import Credentials from "../components/Credentials";
 import ShowError from "../components/ShowError";
 import { addError } from "../reducers/error-reducer";
+import Input from "../components/Input";
 
 const SignUp = () => {
 
@@ -30,8 +31,8 @@ const SignUp = () => {
         try {
             validatePassword(password)
             await register(user)
-                 .then(() => navigate("/login"))
-                 .catch((error) => dispatch(addError(error.message)))
+                .then(() => navigate("/login"))
+                .catch((error) => dispatch(addError(error.message)))
         } catch (error) {
             dispatch(addError(error.message))
         }
@@ -44,17 +45,19 @@ const SignUp = () => {
     };
 
     return (
-        <center>
-            <div>
+        <div className="centralized-container">
+            <form>
                 <h1>Sign Up</h1>
-                <form>
-                    <Credentials />
-                    <input type="password" value={checkPassword} onChange={handleCheckPasswordChange} />
-                    <input type="button" value="Create" onClick={createUser} />
-                </form>
+                <Credentials />
+                <Input placeholder="Repeat the password" required={true} name="password" type="password" value={checkPassword} onChange={handleCheckPasswordChange} />
+                <div className="credentials-link">
+                    <p>Are you already registered? Click <b><Link to="/login">here</Link></b> to log in.</p>
+                </div>
+                <Input type="button" value="Create" onClick={createUser}/>
                 <ShowError />
-            </div>
-        </center>
+            </form>
+            
+        </div>
     )
 
 }

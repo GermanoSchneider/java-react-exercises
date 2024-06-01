@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import Credentials from "../components/Credentials";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { setToken, setUsername } from "../auth/storage";
 import ShowError from "../components/ShowError";
 import { addError } from "../reducers/error-reducer";
 import { signIn } from "../api/auth-api";
+import Input from "../components/Input";
+import '../index.css';
 
 const SignIn = () => {
 
@@ -34,16 +36,17 @@ const SignIn = () => {
     }
 
     return (
-        <center>
-            <div>
+        <div className="centralized-container">
+            <form>
                 <h1>Sign In</h1>
-                <form>
-                    <Credentials />
-                    <input type="button" value="Login" onClick={login} />
-                </form>
-                <ShowError />
-            </div>
-        </center>
+                <Credentials />
+                <div className="credentials-link">
+                    <p>Don't you have an account yet? Click <b><Link to="/register">here</Link></b> to create one.</p>
+                </div>
+                <Input type="button" value="Login" onClick={login}/>
+            </form>
+            <ShowError />
+        </div>
     )
 
 }

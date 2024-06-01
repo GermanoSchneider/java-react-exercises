@@ -2,8 +2,8 @@ import axios from "axios";
 import { getToken } from "../auth/storage";
 
 const api = axios.create({
-        baseURL: 'http://localhost:8080/',
-        headers: { 'Content-Type': 'application/json' }
+    baseURL: 'http://localhost:8080/',
+    headers: { 'Content-Type': 'application/json' }
 });
 
 api.interceptors.request.use(config => {
@@ -15,15 +15,13 @@ api.interceptors.request.use(config => {
     return Promise.reject(new Error("An error occurred"))
 })
 
-api.interceptors.response.use((response) => response,  (error) => {
+api.interceptors.response.use((response) => response, (error) => {
 
-    if (error.response && error.response.status === 401) {
-
-        window.location.href = "/login";
-        return Promise.reject(new Error())
+    if (error.response.data) {
+        return Promise.reject(new Error(error.response.data))
     }
 
-    return Promise.reject(new Error("An error occurred. Please, try again later!"))
+    return Promise.reject(new Error("An unexpected error occurred. Please, try again later!"))
 })
 
 
