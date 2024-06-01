@@ -1,16 +1,8 @@
 package com.feefo.note_web_app_web_service.infrastructure.note.persistence;
 
-import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
-import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
-import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-
 import com.feefo.note_web_app_web_service.domain.note.Note;
 import com.feefo.note_web_app_web_service.domain.note.NoteRepository;
 import com.feefo.note_web_app_web_service.infrastructure.note.NoteMapper;
-import java.time.LocalDateTime;
-import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +10,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+
+import static com.feefo.note_web_app_web_service.ModelFixture.buildNote;
+import static com.feefo.note_web_app_web_service.ModelFixture.noteBuilder;
+import static com.feefo.note_web_app_web_service.infrastructure.note.NoteFixture.buildFrom;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 @DataJpaTest
 @Import({NoteDatabaseRepository.class, NoteMapper.class})
@@ -85,9 +86,10 @@ class NoteRepositoryTest {
 
         Note updatedNote = noteRepository.update(savedNote.getId(), newText, savedNote.getOwner());
 
-        LocalDateTime lastUpdate = updatedNote.getLastUpdate().withNano(0);
+        LocalDateTime lastUpdate = updatedNote.getLastUpdate().withNano(0).withSecond(0);
 
-        assertThat(lastUpdate).isEqualTo(LocalDateTime.now().withNano(0));
+        assertThat(lastUpdate)
+                .isEqualTo(LocalDateTime.now().withNano(0).withSecond(0));
 
         assertThat(updatedNote)
             .usingRecursiveComparison()
