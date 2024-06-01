@@ -1,19 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
-import api from "../api/api"
 import Credentials from "../components/Credentials";
 import { useNavigate } from "react-router-dom";
 import { setToken, setUsername } from "../auth/storage";
 import ShowError from "../components/ShowError";
 import { addError } from "../reducers/error-reducer";
+import { signIn } from "../api/auth-api";
 
 const SignIn = () => {
 
     const { username, password } = useSelector(state => state.credential);
-    
+
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const login = () => {
+    const login = async () => {
 
         const basicAuth = {
             auth: {
@@ -22,12 +22,15 @@ const SignIn = () => {
             }
         }
 
-        api.post('auth/login', {}, basicAuth)
-            .then(response => {
-                setToken(response.data);
-                setUsername(username);
+        await signIn(basicAuth)
+            .then((response) => {
+                setToken(response.data)
+                setUsername(username)
                 navigate("/")
-            }).catch(error => dispatch(addError(error.message)));
+            })
+            .catch(error => dispatch(addError(error.message)))
+
+
     }
 
     return (
@@ -35,10 +38,10 @@ const SignIn = () => {
             <div>
                 <h1>Sign In</h1>
                 <form>
-                    <Credentials/>
+                    <Credentials />
                     <input type="button" value="Login" onClick={login} />
                 </form>
-                <ShowError/>
+                <ShowError />
             </div>
         </center>
     )

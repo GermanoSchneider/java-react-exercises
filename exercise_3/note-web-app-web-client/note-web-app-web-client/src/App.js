@@ -6,8 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
-import ProtectedRoute from './pages/ProtectedRoute';
-
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
 

@@ -10,16 +10,20 @@ api.interceptors.request.use(config => {
     const token = getToken();
     if (token) config.headers['Authorization'] = 'Bearer ' + token
     return config;
-}, error => Promise.reject(error))
+}, error => {
+    console.log(error)
+    return Promise.reject(new Error("An error occurred"))
+})
 
 api.interceptors.response.use((response) => response,  (error) => {
 
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
 
         window.location.href = "/login";
-
-        return Promise.reject(error);
+        return Promise.reject(new Error())
     }
+
+    return Promise.reject(new Error("An error occurred. Please, try again later!"))
 })
 
 
