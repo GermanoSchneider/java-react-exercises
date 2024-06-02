@@ -53,10 +53,9 @@ const SignUp = () => {
                 <div className="credentials-link">
                     <p>Are you already registered? Click <b><Link to="/login">here</Link></b> to log in.</p>
                 </div>
-                <Input type="button" value="Create" onClick={createUser}/>
-                <ShowError />
+                <Input type="button" value="Create" onClick={createUser} />
             </form>
-            
+            <ShowError />
         </div>
     )
 

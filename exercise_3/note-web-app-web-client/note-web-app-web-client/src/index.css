@@ -1,23 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 :root {
-  --orange: #EC7A1C;
+  --orange: #C75E0E;
   --gray: #E6E4E0;
   --black: #44443B;
+  --blue: #293A47;
   --white: white;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: 	var(--white);
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--white);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+  color: var(--blue);
 }
 
 input {
@@ -27,7 +29,7 @@ input {
   outline-color: transparent;
   padding-left: 20px;
   margin: 10px;
-  font-size: 16px;
+  font-size: medium;
   color: var(--black);
   background-color: var(--gray);
   border-radius: 20px;
@@ -35,11 +37,16 @@ input {
 
 
 input[type="button"] {
-  background-color: var(--orange);
+  background-color: var(--blue);
   color: var(--white);
+  padding-left: 0px;
 }
 
 input[type="button"]:hover {
+  cursor: pointer;
+}
+
+button:hover {
   cursor: pointer;
 }
 
@@ -53,11 +60,12 @@ form {
 
 .credentials-link {
   padding: 5px;
+  color: var(--black);
 }
 
 .credentials-link a {
   text-decoration: none;
-  color: var(--orange);
+  color: var(--blue);
 }
 
 .centralized-container {
@@ -67,4 +75,191 @@ form {
   height: 100vh;
   margin: 0;
   text-align: center;
+}
+
+.show-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-modal {
+  width: 50%;
+  height: auto;
+  padding: 20px;
+  border: 1px solid var(--black);
+  border-radius: 20px;
+  margin: auto;
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.error-modal h2 {
+  color: red;
+}
+
+/* -------------------------------------------------------------- */
+
+header {
+  width: 100%;
+  background-color: var(--white);
+  margin-bottom: 5px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.logout {
+  text-align: center;
+  width: 20%;
+  float: right;
+}
+
+.logout p {
+  color: var(--blue);
+  font-weight: 100;
+  text-transform: capitalize;
+}
+
+.logout button {
+  color: var(--blue);
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  background-color: transparent;
+  border: none;
+}
+
+.container {
+  display: flex;
+}
+
+/* SIDEBAR STYLE */
+
+.sidebar {
+  flex: 0 0 20%;
+  text-align: center;
+  background-color: var(--blue);
+  padding-top: 15px;
+  position: fixed;
+  width: 20%;
+  height: 100%;
+  overflow: auto;
+  color: var(--white);
+}
+
+
+.sidebar p {
+  font-size: small;
+}
+
+.sidebar-btn-note,
+.sidebar-btn-new {
+  width: 70%;
+  padding: 10px 20px 10px 20px;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+}
+
+.sidebar-btn-new {
+  margin-bottom: 35px;
+  background-color: var(--white);
+  border: 1px solid var(--white);
+  color: var(--blue);
+}
+
+.sidebar-btn-new:hover {
+  background-color: var(--blue);
+  color: var(--white);
+  transition: 0.3s;
+}
+
+.sidebar-btn-note {
+  background-color: var(--blue);
+  color: var(--white);
+  border: 1px solid var(--white);
+  margin-bottom: 10px;
+}
+
+.sidebar-draft-note {
+  background-color: var(--gray);
+  font-style: italic;
+  color: var(--blue);
+  border: 1px solid var(--gray);
+}
+
+.sidebar-btn-note:hover {
+  background-color: white;
+  color: var(--blue);
+  transition: 0.3s;
+}
+
+/* NOTEPAD STYLE */
+
+.notepad {
+  flex: 80%;
+  padding: 15px;
+  height: 100vh;
+  margin-left: 20%;
+  background-color: var(--white);
+}
+
+.notepad textarea {
+  width: 100%;
+  outline-color: var(--blue);
+  border-color: var(--blue);
+  height: 70%;
+  font-size: larger;
+  resize: none;
+}
+
+.notepad-btn-actions {
+  float: right;
+}
+
+.notepad-btn-actions button {
+  padding: 10px 40px 10px 40px;
+  outline: none;
+  border: none;
+  border: 1px solid var(--blue);
+  border-radius: 20px;
+  color: var(--gray);
+  background-color: var(--blue);
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+.notepad-btn-actions button:hover {
+  background-color: var(--white);
+  color: var(--blue);
+  transition: 0.3s;
+}
+
+.notepad-note-info {
+  font-size: small;
+  font-weight: bold;
+  float: left;
+}
+
+/* RESPONSIVE STYLE */
+
+@media (max-width: 600px) {
+
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    height: auto;
+  }
+
+  .notepad {
+    margin-left: 0;
+  }
+
+  .sidebar,
+  .notepad {
+    flex: 100%;
+  }
 }

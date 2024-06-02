@@ -1,7 +1,11 @@
-import { getUsername } from "../auth/storage";
+import { getUsername, removeToken } from "../auth/storage";
 import { useEffect, useState } from "react";
 import { isNotUndefined, randomId } from "../utils/Utils";
 import { getAll, remove, save, update } from "../api/note-api";
+import { useNavigate } from "react-router-dom";
+import ShowError from "../components/ShowError";
+import { useDispatch } from "react-redux";
+import { addError } from "../reducers/error-reducer";
 
 const Home = () => {
 
@@ -10,27 +14,35 @@ const Home = () => {
 
     const [selectedNote, setSelectedNote] = useState();
 
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch()
+
     useEffect(() => {
         getAllNotes()
-        .then(notes => setSelectedNote(notes[0]));
+            .then(notes => setSelectedNote(notes[0]));
     }, [])
 
     const handleTextChange = (event) => {
 
-        setSelectedNote({
-            id: selectedNote?.id,
-            text: event.target.value,
-            isDraft: selectedNote?.isDraft,
-            creation: selectedNote?.creation,
-            lastUpdate: selectedNote?.lastUpdate
-        })
+        if (isNotUndefined(selectedNote)) {
+            setSelectedNote({
+                id: selectedNote?.id,
+                text: event.target.value,
+                isDraft: selectedNote?.isDraft,
+                creation: selectedNote?.creation,
+                lastUpdate: selectedNote?.lastUpdate
+            })
+        }
 
     }
 
     const getAllNotes = async () => {
-        const response = await getAll()
-        setNotes(response.data)
-        return response.data;
+       return await getAll()
+            .then((response) => {
+                setNotes(response.data)
+                return response.data;
+            }).catch(error => dispatch(addError(error.message)))
     }
 
     const createDraftNote = () => {
@@ -61,14 +73,18 @@ const Home = () => {
                 text: note.text
             }
 
-            const response = await save(payload)
-            const createdNote = response.data;
+            await save(payload)
+                .then(async (response) => {
 
-            setNotes([...notes, createdNote])
-            removeFromDraft(note) 
-            setSelectedNote(createdNote)
+                    const createdNote = response.data;
 
-            await getAllNotes()
+                    setNotes([...notes, createdNote])
+                    removeFromDraft(note)
+                    setSelectedNote(createdNote)
+
+                    await getAllNotes()
+                })
+                .catch(error => dispatch(addError(error.message)))
         }
     }
 
@@ -80,13 +96,25 @@ const Home = () => {
                 text: note.text
             }
 
-            const response = await update(note.id, payload)
-            const updatedNote = response.data;
+            await update(note.id, payload)
+                .then(async (response) => {
 
-            setNotes([...notes, response.data])
-            setSelectedNote(updatedNote)
+                    const updatedNote = response.data;
 
-            await getAllNotes()
+                    setNotes([...notes, response.data])
+                    setSelectedNote(updatedNote)
+
+                    console.log("CAIU AQUI")
+
+                    await getAllNotes()
+
+                })
+                .catch(error => {
+                    console.log(error)
+                    dispatch(addError(error.message))
+                })
+
+
         }
     }
 
@@ -94,57 +122,75 @@ const Home = () => {
 
         if (isNotUndefined(note)) {
 
-           if (isDraftNote(note)) { 
+            if (isDraftNote(note)) {
                 removeFromDraft(note)
-           } else {
+                setSelectedNote(undefined)
+            } else {
                 await remove(note.id)
-                await getAllNotes();
-           }
+                    .then(async () => {
+                        await getAllNotes();
+                        setSelectedNote(undefined)
+                    }).catch(error => dispatch(addError(error.message)))
 
-           setSelectedNote(undefined)
+            }
+
+
         }
+    }
+
+    const logout = () => {
+        removeToken()
+        navigate("/login")
     }
 
 
     return (
         <div>
-            <header>
-                <h1>Hello, {getUsername()}</h1>
-            </header>
-            <button onClick={createDraftNote}>New</button>
-            <div>
-                <h3>My Draft Notes</h3>
-                <ul>
-                    {
-                        draftNotes.map((note, index) => <li key={index}>
-                            <button onClick={() => setSelectedNote(note)}>{note.text}</button>
-                        </li>)
-                    }
-                </ul>
-            </div>
-            <div>
-                <h3>My Saved Notes</h3>
-                <ul>
-                    {
-                        notes.map(note => <li key={note.id}>
-                            <a onClick={() => setSelectedNote(note)}>{note.id + ' : ' + note.text}</a>
-                        </li>)
-                    }
-                </ul>
-            </div>
-            <div>
-                <textarea value={selectedNote?.text ?? ''} onChange={handleTextChange}></textarea><br />
-                <div>
-                    <p>Creation: {selectedNote?.creation}</p>
-                    <p>Last update: {selectedNote?.lastUpdate}</p>
+            <ShowError />
+            <div className="container">
+                <div className="sidebar">
+                    <button className="sidebar-btn-new" onClick={createDraftNote}>New</button>
+                    <h3>My notes</h3>
+                    {draftNotes.length > 0 || notes.length > 0 ?
+                        <div>
+                            {draftNotes.map((note, index) =>
+                                <button key={index} className="sidebar-btn-note sidebar-draft-note" onClick={() => setSelectedNote(note)}>
+                                    {note.text.substring(0, 20)}
+                                </button>)}
+                            {notes.map((note, index) =>
+                                <button key={index} className="sidebar-btn-note" onClick={() => setSelectedNote(note)}>
+                                    {note.text.substring(0, 20)}
+                                </button>)}
+                        </div>
+                        : <p>There are no notes</p>}
+
                 </div>
-                {selectedNote?.isDraft ?
-                    <button onClick={() => createNote(selectedNote)}>Save</button>
-                    : <button onClick={() => updateNote(selectedNote)}>Update</button>
-                }
-                <button onClick={() => removeNote(selectedNote)}>Delete</button>
+                <div className="notepad">
+                    <header>
+                        <div className="logout">
+                            <p>{getUsername()} | <button onClick={logout}>Logout</button></p>
+                        </div>
+                    </header>
+                    <textarea onChange={handleTextChange} value={selectedNote?.text}></textarea>
+                    {isNotUndefined(selectedNote)
+                        ?
+                        <div>
+                            <div className="notepad-note-info">
+                                <p>Creation: {selectedNote?.creation?.split(".")[0]}</p>
+                                <p>Last update: {selectedNote?.creation?.split(".")[0]}</p>
+                            </div>
+                            <div className="notepad-btn-actions">
+                                {selectedNote?.isDraft ?
+                                    <button onClick={() => createNote(selectedNote)}>Save</button>
+                                    : <button onClick={() => updateNote(selectedNote)}>Update</button>
+                                }
+                                <button onClick={() => removeNote(selectedNote)}>Delete</button>
+                            </div>
+                        </div> : <div></div>}
+                </div>
             </div>
         </div>
+
     )
 }
 
