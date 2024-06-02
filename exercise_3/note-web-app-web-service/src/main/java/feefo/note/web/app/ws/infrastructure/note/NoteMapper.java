@@ -9,6 +9,7 @@ import feefo.note.web.app.ws.infrastructure.note.persistence.NoteEntity;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
+// Note mapper is responsible to convert note objects from the anti-corruption layer
 @Component
 public class NoteMapper {
 

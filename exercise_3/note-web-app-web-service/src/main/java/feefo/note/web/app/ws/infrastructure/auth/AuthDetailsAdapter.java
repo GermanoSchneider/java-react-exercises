@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+// This component is responsible to check the basic auth
+// username during the request managed by Spring Security
 @Component
 class AuthDetailsAdapter implements UserDetailsService {
 

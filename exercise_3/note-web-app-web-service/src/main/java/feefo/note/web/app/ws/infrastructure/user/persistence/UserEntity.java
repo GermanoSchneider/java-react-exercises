@@ -26,6 +26,7 @@ public class UserEntity {
 
     private String password;
 
+    // A user can have many notes
     @OneToMany(cascade = ALL, fetch = FetchType.EAGER)
     private Collection<NoteEntity> notes;
 

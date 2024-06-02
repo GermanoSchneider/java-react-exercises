@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
+// This model is responsible to validate the domain model constraints
 public class ConstraintValidator {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();

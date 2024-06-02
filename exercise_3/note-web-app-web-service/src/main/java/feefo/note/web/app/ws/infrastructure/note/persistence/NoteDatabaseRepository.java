@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
+// Implementation of the note database operations
 @Repository
 class NoteDatabaseRepository implements NoteRepository {
 

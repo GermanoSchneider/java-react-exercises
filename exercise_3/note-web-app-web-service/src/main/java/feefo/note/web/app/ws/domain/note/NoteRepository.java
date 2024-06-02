@@ -2,6 +2,7 @@ package feefo.note.web.app.ws.domain.note;
 
 import java.util.Collection;
 
+// Note repository domain service
 public interface NoteRepository {
 
     Note save(Note note);

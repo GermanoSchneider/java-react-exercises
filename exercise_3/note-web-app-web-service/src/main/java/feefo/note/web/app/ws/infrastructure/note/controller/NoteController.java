@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+// Note controller operations represented by a CRUD
 @RestController
 @RequestMapping(path = "/notes")
 class NoteController {

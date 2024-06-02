@@ -31,6 +31,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(KeyProperties.class)
@@ -48,9 +49,15 @@ public class SecurityConfig  {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // Disable CSRF
+
         http.csrf(AbstractHttpConfigurer::disable);
 
+        // Apply CORS configuration
+
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
+        // Set requests visibility (non-authenticated and authenticated)
 
         http.authorizeHttpRequests((auth) ->
             auth.requestMatchers("/auth/user")
@@ -59,13 +66,21 @@ public class SecurityConfig  {
                 .authenticated()
         );
 
+        // Set that it will use the JWT configuration from Spring Security
+
         http.oauth2ResourceServer(oauth -> oauth.jwt(withDefaults()));
+
+        // Set that it won't store session
 
         http.sessionManagement(session ->
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
+        // Set it will use the basic auth configuration
+
         http.httpBasic(withDefaults());
+
+        // Set the user details configuration
 
         http.userDetailsService(userDetailsService);
 
@@ -77,12 +92,18 @@ public class SecurityConfig  {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
+
+        // Authentication provider will load user data from database
 
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setUserDetailsService(userDetailsService);
+
+        // Password will be encoded with the defined password encoder bean in this class
+
         provider.setPasswordEncoder(passwordEncoder());
 
         return provider;
@@ -90,6 +111,8 @@ public class SecurityConfig  {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+
+        // Enable CORS to the following configuration:
 
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
@@ -100,6 +123,7 @@ public class SecurityConfig  {
         return source;
     }
 
+    // Bean to decode JWT
     @Bean
     public JwtDecoder jwtDecoder() {
 
@@ -108,6 +132,7 @@ public class SecurityConfig  {
             .build();
     }
 
+    // Bean to encode JWT
     @Bean
     public JwtEncoder jwtEncoder() {
 

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// The User model represents the system's user
 public class User {
 
     private final Long id;

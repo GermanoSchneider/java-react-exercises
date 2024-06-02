@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
+// User mapper is responsible to convert user objects from the anti-corruption layer
 @Component
 public class UserMapper {
 
