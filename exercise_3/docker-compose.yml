@@ -4,7 +4,7 @@ services:
   frontend:
     image: note-web-app-client
     build: 
-      context: ./note-web-app-web-client
+      context: ./note-web-app-client
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -13,7 +13,7 @@ services:
   backend:
     image: note-web-app-ws
     build: 
-      context: ./note-web-app-web-service
+      context: ./note-web-app-ws
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
