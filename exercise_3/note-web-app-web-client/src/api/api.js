@@ -24,7 +24,7 @@ api.interceptors.response.use((response) => response, (error) => {
 
         if (error.response.status === 401) {
 
-            return Promise.reject(new Error("You are not authorized!")).finally(() => setTimeout(() => {
+            return Promise.reject(new Error("You are unauthorized!")).finally(() => setTimeout(() => {
                 window.location.href = "/login"
             }, 1000));
         }
