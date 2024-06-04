@@ -13,6 +13,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -131,7 +132,7 @@ class NoteControllerTest {
         .update(note.getId(), request.getText(), note.getOwner());
 
     MvcResult result = mockMvc.perform(
-            post("/notes/" + note.getId())
+            put("/notes/" + note.getId())
                 .contentType(APPLICATION_JSON)
                 .content(jsonRequest)
                 .with(user("john").password("1234"))
