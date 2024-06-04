@@ -6,10 +6,6 @@
   margin: auto;
 }
 
-.info-icon {
-  float: right;
-}
-
 .contact-phone {
   display: flex;
   padding-left: 15px;
