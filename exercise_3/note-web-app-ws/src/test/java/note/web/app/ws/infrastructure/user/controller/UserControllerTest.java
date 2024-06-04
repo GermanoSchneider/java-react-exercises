@@ -14,6 +14,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.text.DateFormat;
+import java.util.Collection;
 import note.web.app.ws.ModelFixture;
 import note.web.app.ws.SecurityConfigTest;
 import note.web.app.ws.application.UserApplicationService;
@@ -22,8 +24,6 @@ import note.web.app.ws.domain.user.User.UserBuilder;
 import note.web.app.ws.infrastructure.note.NoteMapper;
 import note.web.app.ws.infrastructure.user.UserFixture;
 import note.web.app.ws.infrastructure.user.UserMapper;
-import java.text.DateFormat;
-import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;

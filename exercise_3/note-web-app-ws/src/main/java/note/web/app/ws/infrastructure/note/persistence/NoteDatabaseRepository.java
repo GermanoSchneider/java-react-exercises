@@ -2,11 +2,11 @@ package note.web.app.ws.infrastructure.note.persistence;
 
 import static java.util.stream.Collectors.toList;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
 import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.domain.note.NoteRepository;
 import note.web.app.ws.infrastructure.note.NoteMapper;
-import java.time.LocalDateTime;
-import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
 // Implementation of the note database operations

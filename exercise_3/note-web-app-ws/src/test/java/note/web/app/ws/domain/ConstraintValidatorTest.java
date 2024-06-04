@@ -15,7 +15,8 @@ class ConstraintValidatorTest {
 
         DummyClass dummyClass = new DummyClass(null);
 
-        var exception = assertThrows(ConstraintViolationException.class, () -> ConstraintValidator.validate(dummyClass));
+        var exception = assertThrows(ConstraintViolationException.class,
+            () -> ConstraintValidator.validate(dummyClass));
 
         String expectedErrorMessage = "dummyAttribute: should not be null";
 

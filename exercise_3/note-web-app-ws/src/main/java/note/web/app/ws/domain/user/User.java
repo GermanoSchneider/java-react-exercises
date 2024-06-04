@@ -2,10 +2,10 @@ package note.web.app.ws.domain.user;
 
 import static note.web.app.ws.domain.ConstraintValidator.validate;
 
-import note.web.app.ws.domain.note.Note;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
+import note.web.app.ws.domain.note.Note;
 
 // The User model represents the system's user
 public class User {

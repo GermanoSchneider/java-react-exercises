@@ -3,8 +3,8 @@ package note.web.app.ws.domain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import note.web.app.ws.ModelFixture;
 import jakarta.validation.ConstraintViolationException;
+import note.web.app.ws.ModelFixture;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

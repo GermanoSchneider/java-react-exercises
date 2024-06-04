@@ -2,8 +2,8 @@ package note.web.app.ws.infrastructure.auth;
 
 import static org.springframework.security.oauth2.jwt.JwtEncoderParameters.from;
 
-import note.web.app.ws.domain.TokenService;
 import java.time.Instant;
+import note.web.app.ws.domain.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;

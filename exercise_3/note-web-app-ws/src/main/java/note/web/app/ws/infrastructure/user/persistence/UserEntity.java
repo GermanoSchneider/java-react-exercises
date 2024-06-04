@@ -3,7 +3,6 @@ package note.web.app.ws.infrastructure.user.persistence;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
-import note.web.app.ws.infrastructure.note.persistence.NoteEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
+import note.web.app.ws.infrastructure.note.persistence.NoteEntity;
 
 @Entity
 @Table(name = "users")

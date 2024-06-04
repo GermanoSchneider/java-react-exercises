@@ -1,9 +1,9 @@
 package note.web.app.ws;
 
-import note.web.app.ws.domain.note.Note;
-import note.web.app.ws.domain.user.User;
 import java.time.LocalDateTime;
+import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.domain.note.Note.NoteBuilder;
+import note.web.app.ws.domain.user.User;
 import note.web.app.ws.domain.user.User.UserBuilder;
 
 public class ModelFixture {

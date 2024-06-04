@@ -2,11 +2,11 @@ package note.web.app.ws.infrastructure.note;
 
 import static note.web.app.ws.domain.note.Note.builder;
 
+import java.time.LocalDateTime;
 import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.infrastructure.note.controller.NoteRequestDto;
 import note.web.app.ws.infrastructure.note.controller.NoteResponseDto;
 import note.web.app.ws.infrastructure.note.persistence.NoteEntity;
-import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 // Note mapper is responsible to convert note objects from the anti-corruption layer

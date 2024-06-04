@@ -3,10 +3,10 @@ package note.web.app.ws.infrastructure.auth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
+import java.util.ArrayList;
 import note.web.app.ws.ModelFixture;
 import note.web.app.ws.domain.user.User;
 import note.web.app.ws.domain.user.UserRepository;
-import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

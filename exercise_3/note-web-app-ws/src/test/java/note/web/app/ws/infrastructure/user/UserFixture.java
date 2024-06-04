@@ -1,5 +1,7 @@
 package note.web.app.ws.infrastructure.user;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
 import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.domain.user.User;
 import note.web.app.ws.infrastructure.note.NoteFixture;
@@ -7,8 +9,6 @@ import note.web.app.ws.infrastructure.note.persistence.NoteEntity;
 import note.web.app.ws.infrastructure.user.controller.UserRequestDto;
 import note.web.app.ws.infrastructure.user.controller.UserResponseDto;
 import note.web.app.ws.infrastructure.user.persistence.UserEntity;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class UserFixture {
 

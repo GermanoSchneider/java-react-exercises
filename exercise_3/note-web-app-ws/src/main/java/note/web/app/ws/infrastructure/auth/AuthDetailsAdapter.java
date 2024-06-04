@@ -1,8 +1,8 @@
 package note.web.app.ws.infrastructure.auth;
 
+import java.util.ArrayList;
 import note.web.app.ws.domain.user.User;
 import note.web.app.ws.domain.user.UserRepository;
-import java.util.ArrayList;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

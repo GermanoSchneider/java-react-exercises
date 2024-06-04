@@ -6,11 +6,11 @@ import static note.web.app.ws.infrastructure.note.NoteFixture.buildFrom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
 import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.domain.note.NoteRepository;
 import note.web.app.ws.infrastructure.note.NoteMapper;
-import java.time.LocalDateTime;
-import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

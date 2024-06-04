@@ -4,11 +4,11 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import jakarta.validation.ConstraintViolationException;
+import java.security.Principal;
 import note.web.app.ws.application.UserApplicationService;
 import note.web.app.ws.domain.user.User;
 import note.web.app.ws.infrastructure.user.UserMapper;
-import jakarta.validation.ConstraintViolationException;
-import java.security.Principal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

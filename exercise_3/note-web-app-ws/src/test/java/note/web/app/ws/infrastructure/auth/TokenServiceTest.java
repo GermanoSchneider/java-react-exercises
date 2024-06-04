@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.oauth2.jose.jws.SignatureAlgorithm.RS256;
 
-import note.web.app.ws.domain.TokenService;
 import java.time.Instant;
+import note.web.app.ws.domain.TokenService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;

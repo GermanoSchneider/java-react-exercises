@@ -1,8 +1,8 @@
 package note.web.app.ws.application;
 
+import java.util.Collection;
 import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.domain.note.NoteRepository;
-import java.util.Collection;
 import org.springframework.stereotype.Service;
 
 @Service

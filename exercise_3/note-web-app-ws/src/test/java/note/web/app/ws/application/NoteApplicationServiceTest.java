@@ -5,11 +5,11 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+import java.util.Collection;
+import java.util.List;
 import note.web.app.ws.ModelFixture;
 import note.web.app.ws.domain.note.Note;
 import note.web.app.ws.domain.note.NoteRepository;
-import java.util.Collection;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

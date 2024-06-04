@@ -1,9 +1,9 @@
 package note.web.app.ws.domain.note;
 
-import note.web.app.ws.domain.ConstraintValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import note.web.app.ws.domain.ConstraintValidator;
 
 // The Note model represents a note that the user creates
 public class Note extends ConstraintValidator {
