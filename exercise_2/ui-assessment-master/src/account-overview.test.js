@@ -22,10 +22,10 @@ describe('AccountOverview component', () => {
     render(<AccountOverview data={data} />);
   });
 
-  it('validates prop types', () => {
+  it('renders with crashing', () => {
 
     const invalidData = {}; 
-    expect(() => render(<AccountOverview data={invalidData} />)).toThrow();
+    expect(() => render(<AccountOverview data={invalidData} />)).toThrow()
   });
 
 });

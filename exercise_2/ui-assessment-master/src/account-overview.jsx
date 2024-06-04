@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faUpload, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import './account-overview.css';
 import PropTypes from 'prop-types';
@@ -76,6 +76,10 @@ const Sales = styled.div`
     font-size: 18px;
   `
 
+const SalesIcons = styled.div`
+  column-count: 2
+`
+
 const Metrics = styled.div`
     display: flex;
     width: 100%;
@@ -103,39 +107,47 @@ const MetricsSubtitle = styled.h2`
   `
 
 const Icon = styled.span`
-  margin-right: 5px;
+  margin-right: 8px;
 `
 
 export const AccountOverview = ({ data }) => {
+
+  function throwError() {
+    throw new Error("this is a error");
+  }
 
   return (
     <div className="AccountOverview">
       <Header>
         <Title>Account Overview</Title>
         <Contact>
-          <Subtitle>YOUR FEEFO SUPPORT CONTACT</Subtitle>
+          <Subtitle onClick={throwError}>YOUR FEEFO SUPPORT CONTACT</Subtitle>
           <ContactDetails>
             <ContactAvatar>{data.supportContact.name[0]}</ContactAvatar>
             <ContactInfo>
-              <b>{data.supportContact.name}</b><br />
+              <b>{data.supportContact.name}</b><br/>
               <Icon>
-                <FontAwesomeIcon icon={faEnvelope} />  
+                <FontAwesomeIcon icon={faEnvelope}/>
               </Icon>
-              {data.supportContact.email}
-
+              {data.supportContact.email} 
             </ContactInfo>
+            <span className='contact-phone'>020 3362 4208</span>
           </ContactDetails>
         </Contact>
       </Header>
 
       <WhiteBox>
         <Sales>
-          <Icon>
-            <FontAwesomeIcon icon={faUpload} color='#3EB1EB' />
-          </Icon>
-          <b>Sales</b><br /><br />
-
-          You had <b>{data.salesOverview.uploads} uploads</b> and <b>{data.salesOverview.linesAttempted} lines</b> added<br></br>
+          <SalesIcons>
+            <Icon>
+              <FontAwesomeIcon icon={faUpload} color='#3EB1EB' />
+            </Icon>
+            <b>Sales</b><br/><br/>
+            <Icon>
+              <FontAwesomeIcon icon={faInfoCircle} color="#A6A2A2" className='info-icon'/>
+            </Icon>
+          </SalesIcons>
+          You had <b>{data.salesOverview.uploads} uploads</b> and <b>{data.salesOverview.linesAttempted} lines</b> added
         </Sales>
       </WhiteBox>
       <Metrics>
