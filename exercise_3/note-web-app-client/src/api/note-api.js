@@ -9,7 +9,7 @@ export const save = async (payload) => {
 }
 
 export const update = async (id, payload) => {
-    return await api.post("notes/" + id, payload)
+    return await api.put("notes/" + id, payload)
 }
 
 export const remove = async (id) => {
